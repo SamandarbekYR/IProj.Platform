@@ -17,10 +17,17 @@ namespace IProj.DataAccess.Repositories
         }
         public async Task<bool> Add(TEntity entity)
         {
-            await _dbSet.AddAsync(entity);
-            var result = await _appDbContext.SaveChangesAsync();
+            try
+            {
+                await _dbSet.AddAsync(entity);
+                var result = await _appDbContext.SaveChangesAsync();
 
-            return result > 0;
+                return result > 0;
+            }
+            catch 
+            {
+                return false;
+            }
         }
         public IQueryable<TEntity> GetAll()
         =>  _dbSet.AsQueryable();

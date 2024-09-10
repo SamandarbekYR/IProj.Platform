@@ -45,20 +45,25 @@ namespace MVCLearn.Controllers
         [HttpGet]
         public IActionResult Worker()
         {
-            var workerId = HttpContext.Request.Cookies["WorkerId"];
-
-            if (workerId == null)
+            var userGmail = HttpContext.Request.Cookies["UserGmail"];
+            if (userGmail == null)
             {
                 return RedirectToAction("Login", "Accaunt");
             }
 
+            var receiverId = _usersrepository.GetAll().FirstOrDefault(u => u.Gmail == userGmail);
 
-            var messages = _message.GetAll().Where(i => i.ReceiverId == Guid.Parse(workerId) &&
-                                                   i.IsRead == false).ToList();
+            if (receiverId != null)
+            {
+                var messages = _message.GetAll().Where(i => i.ReceiverId == receiverId.Id &&
+                                                       i.IsRead == false).ToList();
 
-            var newMessageCount = messages.Count;
-            ViewData["newMessageCount"] = newMessageCount;
-            return View(messages);
+                var newMessageCount = messages.Count;
+                ViewData["newMessageCount"] = newMessageCount;
+                return View(messages);
+            }
+         
+            return View();
         }
 
         [HttpGet]
@@ -120,7 +125,7 @@ namespace MVCLearn.Controllers
 
             return SignOut(new AuthenticationProperties
             {
-                RedirectUri = Url.Action("Login", "Accaunt") 
+                RedirectUri = Url.Action("Login", "Accaunt")
             }, "Cookies", "oidc");
         }
 
