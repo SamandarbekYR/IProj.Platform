@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Collections.Concurrent;
 
-namespace MVCLearn.Hubs
+namespace IProj.Hubs
 {
     public class NotificationHub : Hub
     {

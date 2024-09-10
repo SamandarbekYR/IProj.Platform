@@ -5,7 +5,7 @@ using IProj.DataAccess.Repositories.Messages;
 using IProj.DataAccess.Repositories.Users;
 using IProj.Service.Services.MessageBroker;
 using IProj.Web.Helpers;
-using MVCLearn.Hubs;
+using IProj.Hubs;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
