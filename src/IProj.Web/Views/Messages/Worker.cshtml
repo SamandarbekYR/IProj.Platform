@@ -1,0 +1,82 @@
+﻿@model List<IProj.Domain.Entities.Messages.Message>
+@{
+    int newMessageCount = ViewData["newMessageCount"] != null
+                          ? Convert.ToInt32(ViewData["newMessageCount"]) : 0;
+}
+<!-- Bootstrap CSS -->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.min.js"></script>
+
+<div style=" display: flex; align-items: center; justify-content: space-between; margin-top: 20px" class="w-full px-3 py-2 border-t dark:border-gray-600">
+    <button id="notificationBell" class="btn btn-primary">
+        🔔 Notifications <span id="notificationCount">@newMessageCount</span>
+    </button>
+    <form asp-action="Logout" method="post">
+        <button type="submit" class="btn btn-outline-danger">Logout</button>
+    </form>
+</div>
+
+<div id="notificationsModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <h5 class="modal-title">Notifications</h5>
+                </div>
+                    <button type="submit" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Message</th>
+                        </tr>
+                    </thead>
+                    <tbody id="notificationsTable">
+                        @if (Model != null && Model.Any())
+                        {
+                            @foreach (var userMessage in Model)
+                            {
+                                <tr data-message-id="@userMessage.Id">
+                                    <td>@userMessage.SendTime</td>
+                                    <td>@userMessage.MessageContent</td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="2" class="text-center">No notifications available.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/worker.js"></script>
+<script>
+    $(document).ready(function () {
+        
+        $('#notificationBell').click(function () {
+            $('#notificationsModal').modal('show');
+        });
+
+        // Modalni yopish uchun 'x' yoki 'Close' tugmasi bosilganda
+        $('.close, .btn-secondary').click(function () {
+            $('#notificationsModal').modal('hide');
+        });
+    });
+</script>

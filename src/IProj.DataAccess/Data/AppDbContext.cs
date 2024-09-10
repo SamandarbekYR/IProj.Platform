@@ -8,7 +8,13 @@ public class AppDbContext : DbContext
 {
     public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options) { }
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Message>()
+            .Property(m => m.Id)
+            .ValueGeneratedNever();
+    }
 
-    DbSet<User> Users { get; set; }
-    DbSet<Message> Messages { get; set; }
+    DbSet<User> users { get; set; }
+    DbSet<Message> messages { get; set; }
 }
