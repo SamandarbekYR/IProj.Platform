@@ -1,5 +1,5 @@
 ﻿const connection = new signalR.HubConnectionBuilder()
-    .withUrl("/notificationHub")
+    .withUrl("https://iproj.uz/notificationHub")
     .configureLogging(signalR.LogLevel.Information)
     .build();
 
