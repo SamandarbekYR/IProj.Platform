@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  iproj-web:
+    image: iproj-web-image   # Imidj nomi
+    build:
+      context: .
+      dockerfile: ./src/IProj.Web/Dockerfile
+    container_name: iproj-web
+    ports:
+      - "4040:8080"
+      - "8081:8081"
+    networks:
+      - iproj-network
+    restart: always           # Konteynerni qayta ishga tushuradi agar to'xtatilsa
+
+  iproj-consumer:
+    image: iproj-consumer-image   # Imidj nomi
+    build:
+      context: .
+      dockerfile: ./src/IProj.Consumer/Dockerfile
+    container_name: iproj-consumer
+    ports:
+      - "8090:8080"
+      - "8091:8081"
+    networks:
+      - iproj-network 
+    restart: always         # Konteynerni qayta ishga tushuradi agar to'xtatilsa
+
+networks:
+  iproj-network:
+    driver: bridge

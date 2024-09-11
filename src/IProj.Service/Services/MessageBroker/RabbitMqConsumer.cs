@@ -18,7 +18,7 @@ public class RabbitMqConsumer : BackgroundService
     private readonly IConfigurationSection _config;
     private readonly IModel _channel;
     private readonly IConnection _connection;
-
+    
     public RabbitMqConsumer(IConfiguration config,
                             IServiceProvider serviceProvider)
 
@@ -31,7 +31,8 @@ public class RabbitMqConsumer : BackgroundService
             HostName = _config["Host"],
             Port = int.Parse(_config["Port"]!),
             UserName = _config["Username"],
-            Password = _config["Password"]
+            Password = _config["Password"],
+            VirtualHost = _config["VirtualHost"]
         };
 
         _connection = factory.CreateConnection();

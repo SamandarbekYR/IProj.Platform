@@ -26,7 +26,8 @@ public class RabbitMqProducer : IRabbitMqProducer
             HostName = _config["Host"],
             Port = int.Parse(_config["Port"]!),
             UserName = _config["Username"],
-            Password = _config["Password"]
+            Password = _config["Password"],
+            VirtualHost = _config["VirtualHost"]
         };
         
         _connection = factory.CreateConnection();
