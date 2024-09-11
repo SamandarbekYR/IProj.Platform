@@ -7,6 +7,8 @@ using IProj.Service.Services.MessageBroker;
 using IProj.Web.Helpers;
 using IProj.Hubs;
 using Serilog;
+using IProj.DataAccess.Data;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,7 +31,7 @@ builder.Services.AddAuthentication(options =>
 }).AddCookie("Cookies")
   .AddOpenIdConnect("oidc", options =>
   {
-      options.Authority = "https://localhost:7147";
+      options.Authority = "https://auth.iproj.uz";
       options.ClientId = "oidcMVCApp";
       options.ClientSecret = "Wabase";
       options.ResponseType = "code";
@@ -49,12 +51,25 @@ builder.Services.AddAuthentication(options =>
 
 var app = builder.Build();
 
+// Ma'lumotlar bazasini yaratish va migratsiyalarni qo'llash
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+    // Migratsiyalarni qo'llash va ma'lumotlar bazasini yangilash
+    dbContext.Database.Migrate();
+}
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
 
+app.Use((context, next) =>
+{
+    context.Request.Scheme = "https"; return next();
+});
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseSerilogRequestLogging();
