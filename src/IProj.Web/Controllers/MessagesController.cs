@@ -33,7 +33,7 @@ namespace MVCLearn.Controllers
             }
 
             var users = _usersrepository.GetAll().Where(u => u.RoleName == "Worker").ToList();
-            return View(users);
+            return View(users); // users
         }
 
         [HttpPost]

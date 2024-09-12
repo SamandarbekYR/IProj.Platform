@@ -38,34 +38,46 @@ document.getElementById("sendMessageButton").addEventListener("click", async fun
     if (message.length === 0) {
         alert('Please enter a message.');
         return;
-    }
-    else if (selectedUsers.length === 0) {
+    } else if (selectedUsers.length === 0) {
         alert('Please select at least one user.');
-        return; 
+        return;
     }
-
+    document.getElementById("progressContainer").style.display = "block";
+    document.getElementById("progressText").style.display = "block";
     document.getElementById("sendMessageButton").style.display = "none";
     document.getElementById("loadingButton").style.display = "inline-flex";
+
+    // Show progress bar
+    document.getElementById("progressContainer").style.display = "block";
 
     let totalSuccess = 0;
     let totalFailure = 0;
     let divSuccessCount = document.getElementById('divsuccessfullMessageCount');
-    divSuccessCount.textContent = `Successfully sent ${totalSuccess} ...`;
+    divSuccessCount.textContent = `Successfully sent ${totalSuccess} person`;
     let divFailedMessageCount = document.getElementById('divFailedMessageCount');
     divFailedMessageCount.textContent = `Failed to send: ${totalFailure}`;
     let divWhoMessageIsSending = document.getElementById('divWhoMessageisSending');
 
+    let progressBar = document.getElementById('progressBar');
+    let progressText = document.getElementById('progressText');
+    let totalUsers = selectedUsers.length;
     let i = 0;
 
     async function sendNextMessage() {
         if (i >= selectedUsers.length) {
             alert('Message sending process completed!');
             document.getElementById("commentmessage").value = '';
-
             document.getElementById("loadingButton").style.display = "none";
             document.getElementById("sendMessageButton").style.display = "inline-flex";
-            $('.userCheckbox').prop('checked', false); 
-            $('#checkbox-all-search').prop('checked', false); 
+
+            // Hide progress bar and reset to 0%
+            document.getElementById("progressContainer").style.display = "none";
+            document.getElementById("progressText").style.display = "none";
+            progressBar.style.width = '0%';
+            progressText.textContent = '0%';
+
+            $('.userCheckbox').prop('checked', false);
+            $('#checkbox-all-search').prop('checked', false);
             setTimeout(function () {
                 document.getElementById('divtoastr').style.display = 'none';
             }, 3000);
@@ -77,9 +89,9 @@ document.getElementById("sendMessageButton").addEventListener("click", async fun
 
         await connection.invoke("SendMessageToSelectedUsers", selectedUsers[i], message)
             .then(() => {
+                divWhoMessageIsSending.textContent = `Message sent to ${selectedUsers[i]} successfully`;
                 totalSuccess++;
-                divSuccessCount.textContent = `Successfully sent to ${totalSuccess} ...`;
-                divWhoMessageIsSending.textContent = `Message sent to ${selectedUsers[i].email} successfully`
+                divSuccessCount.textContent = `Successfully sent to ${totalSuccess} Person`;
             })
             .catch((err) => {
                 console.error("Error sending message: ", err);
@@ -89,6 +101,10 @@ document.getElementById("sendMessageButton").addEventListener("click", async fun
             })
             .finally(() => {
                 i++;
+                let progress = (i / totalUsers) * 100;
+                progressBar.style.width = progress + '%';
+                progressText.textContent = Math.round(progress) + '% ...';
+
                 document.getElementById('divtoastr').style.display = 'block';
                 setTimeout(sendNextMessage, 3000);
             });
@@ -108,8 +124,11 @@ function getSelectedUserEmails() {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById("progressContainer").style.display = "none"
+    document.getElementById("progressText").style.display = "none";
     setTimeout(function () {
         document.getElementById('loading').classList.add('hidden');
         document.getElementById('table-content').classList.remove('hidden');
+
     }, 3000); 
 });
