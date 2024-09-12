@@ -16,27 +16,33 @@ public class RabbitMqProducer : IRabbitMqProducer
     public RabbitMqProducer(IConfiguration configuration,
                             ILogger<RabbitMqProducer> logger)
     {
-        
-
-        _config = configuration.GetSection("MessageBroker");
-        _logger = logger;
-
-        var factory = new ConnectionFactory()
+        try
         {
-            HostName = _config["Host"],
-            Port = int.Parse(_config["Port"]!),
-            UserName = _config["Username"],
-            Password = _config["Password"],
-            VirtualHost = _config["VirtualHost"]
-        };
-        
-        _connection = factory.CreateConnection();
-        _channel = _connection.CreateModel();
-        _channel.QueueDeclare(queue: _config["Queue"],
-                              durable: true, exclusive: false,
-                              autoDelete: false, arguments: null);
+            _config = configuration.GetSection("MessageBroker");
+            _logger = logger;
 
-        _channel.BasicQos(prefetchSize: 0, prefetchCount: 1, global: false);
+            var factory = new ConnectionFactory()
+            {
+                HostName = _config["Host"],
+                Port = int.Parse(_config["Port"]!),
+                UserName = _config["Username"],
+                Password = _config["Password"],
+                VirtualHost = _config["VirtualHost"]
+            };
+
+            _connection = factory.CreateConnection();
+            _channel = _connection.CreateModel();
+            _channel.QueueDeclare(queue: _config["Queue"],
+                                  durable: true, exclusive: false,
+                                  autoDelete: false, arguments: null);
+
+            _channel.BasicQos(prefetchSize: 0, prefetchCount: 1, global: false);
+        }
+
+        catch (Exception ex)
+        {
+            _logger.LogError($"RabbitMq ga ulanishda xatolik yuz berdi: {ex}");
+        }
     }
     public void SendMessage(string message)
     {
