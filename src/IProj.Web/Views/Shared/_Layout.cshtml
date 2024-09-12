@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,15 +9,45 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/IProj.Web.styles.css" asp-append-version="true" />
 </head>
+
 <body>
-    <div class="container">
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-blue border-bottom box-shadow mb-3">
+            <div class="container-fluid d-flex justify-content-between align-items-center">
+                <div>My Project</div>
+
+                <!-- Image and Dropdown -->
+                <div class="dropdown" style="margin-right:75px;">
+                    <img src="~/assets/images/programmisth.jpg" class="rounded-circle" id="profileImage" alt="Profile Image" style="cursor: pointer;">
+                    <div class="dropdown-menu dropdown-menu-right text-center" style="margin-right:15px;" aria-labelledby="profileImage">
+                        <form asp-controller ="Messages" asp-action="Logout" method="post">
+                            <button id="logoutButton" type="submit" class="btn btn-outline-danger"
+                                    style="height: 25px; display: flex; align-items: center; justify-content: center; margin: 0 auto;"
+                                    >
+                                Logout
+                            </button>
+
+                     </form>
+                    </div>
+                </div>
+
+            </div>
+        </nav>
+    </header>
+
+
+    <!-- Main container -->
+    <div class="container mt-4">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
+
+    <!-- Scripts -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
+
 </html>

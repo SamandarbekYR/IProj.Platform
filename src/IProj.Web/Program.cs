@@ -9,6 +9,7 @@ using IProj.Hubs;
 using Serilog;
 using IProj.DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
+using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,16 +50,27 @@ builder.Services.AddAuthentication(options =>
       options.CallbackPath = "/signin-oidc";
   });
 
+
+var logger = new LoggerConfiguration()
+        .MinimumLevel.Debug()
+        .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+        .Enrich.FromLogContext()
+        .WriteTo.File("Logs/log-.txt", rollingInterval: RollingInterval.Day)
+        .WriteTo.Console()
+        .CreateLogger();
+builder.Host.UseSerilog(logger);
+
+
+
 var app = builder.Build();
 
-// Ma'lumotlar bazasini yaratish va migratsiyalarni qo'llash
-using (var scope = app.Services.CreateScope())
-{
-    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+//using (var scope = app.Services.CreateScope())
+//{
+//    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
-    // Migratsiyalarni qo'llash va ma'lumotlar bazasini yangilash
-    dbContext.Database.Migrate();
-}
+//    // Migratsiyalarni qo'llash va ma'lumotlar bazasini yangilash
+//    dbContext.Database.Migrate();
+//}
 
 if (!app.Environment.IsDevelopment())
 {
@@ -72,7 +84,7 @@ app.Use((context, next) =>
 });
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-app.UseSerilogRequestLogging();
+app.UseSerilogRequestLogging(); 
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
@@ -84,3 +96,4 @@ app.MapControllerRoute(
 app.MapHub<NotificationHub>("/notificationHub");
 
 app.Run();
+

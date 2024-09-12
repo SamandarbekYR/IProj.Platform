@@ -25,3 +25,30 @@ body {
     display: none;
 }
 
+
+.navbar-brand img {
+    border-radius: 50%;
+}
+
+.dropdown-menu {
+    min-width: 105px;
+}
+
+.navbar-text {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color:red;
+}
+
+#profileImage {
+    width: 40px;
+    height: 40px;
+}
+
+.dropdown-menu {
+    display: none; /* Hide initially */
+}
+
+.dropdown.show .dropdown-menu {
+    display: block; /* Show when clicked */
+}

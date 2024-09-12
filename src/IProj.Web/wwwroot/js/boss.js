@@ -85,11 +85,9 @@ document.getElementById("sendMessageButton").addEventListener("click", async fun
             return;
         }
 
-        divWhoMessageIsSending.textContent = `Starting to send messages to ${selectedUsers[i]}`;
 
         await connection.invoke("SendMessageToSelectedUsers", selectedUsers[i], message)
             .then(() => {
-                divWhoMessageIsSending.textContent = `Message sent to ${selectedUsers[i]} successfully`;
                 totalSuccess++;
                 divSuccessCount.textContent = `Successfully sent to ${totalSuccess} Person`;
             })
@@ -131,4 +129,17 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('table-content').classList.remove('hidden');
 
     }, 3000); 
+});
+
+$(document).ready(function () {
+    $('#profileImage').on('click', function () {
+        $(this).parent('.dropdown').toggleClass('show');
+    });
+
+    // Optional: Hide the dropdown when clicking outside
+    $(document).on('click', function (event) {
+        if (!$(event.target).closest('.dropdown').length) {
+            $('.dropdown').removeClass('show');
+        }
+    });
 });

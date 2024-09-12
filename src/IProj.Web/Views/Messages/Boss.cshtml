@@ -17,18 +17,6 @@
             <span id="divsuccessfullMessageCount" class="ms-3 text-sm font-normal">Successfully sent . </span>
       
         </div>
-
-        <div id="toast-danger" class="flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800" role="alert">
-            <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-red-500 bg-red-100 rounded-lg dark:bg-red-800 dark:text-red-200">
-                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
-                </svg>
-                <span class="sr-only">Pending icon</span>
-            </div>
-            <div id="divWhoMessageisSending" class="ms-3 text-sm font-normal">Starting to send messages to.</div>
-      
-        </div>
-
         <div id="toast-warning" class="flex items-center w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800" role="alert">
             <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-orange-500 bg-orange-100 rounded-lg dark:bg-orange-700 dark:text-orange-200">
                 <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
@@ -58,7 +46,6 @@
                             <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor" />
                         </svg>
                         Loading...
-                        <button id="logoutButton" type="submit" class="btn btn-outline-danger" asp-action="Logout" asp-controller="Messages">Logout</button>
                     </button>
                 </div>
             </div>
@@ -112,7 +99,7 @@
                 <div id="progressBar" class="absolute top-0 left-0 h-full bg-blue-600 transition-all duration-500"
                      style="position:absolute; top:0; left:0; height:100%; background-color:blue; width:0%; transition:width 0.3s ease;"></div>
                 <div id="progressText" class="absolute top-0 left-1/2 transform -translate-x-1/2 text-center w-full h-full flex items-center justify-center"
-                     style="font-size:1rem; color:green; z-index:10; ">
+                     style="font-size:1rem; color:chocolate; z-index:10; ">
                     0%
                 </div>
             </div>

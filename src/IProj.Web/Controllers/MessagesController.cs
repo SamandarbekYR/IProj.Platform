@@ -4,6 +4,7 @@ using IProj.DataAccess.Interfaces.Users;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace MVCLearn.Controllers
 {
@@ -32,8 +33,16 @@ namespace MVCLearn.Controllers
                 return RedirectToAction("Login", "Accaunt");
             }
 
-            var users = _usersrepository.GetAll().Where(u => u.RoleName == "Worker").ToList();
-            return View(users); // users
+            try
+            {
+                var users = _usersrepository.GetAll().Where(u => u.RoleName == "Worker").ToList();
+                return View(users); 
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Databasega ulanishda xatolik yuz berdi {ex}");
+            }
+            return View();
         }
 
         [HttpPost]
@@ -116,6 +125,7 @@ namespace MVCLearn.Controllers
         //    }
         //}
 
+        [HttpPost]
         public IActionResult Logout()
         {
             foreach (var cookie in Request.Cookies.Keys)
