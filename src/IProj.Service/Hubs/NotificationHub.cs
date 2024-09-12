@@ -26,6 +26,7 @@ namespace IProj.Hubs
         }
         public override async Task OnConnectedAsync()
         {
+
             var httpContext = Context.GetHttpContext();
             var userGmail = httpContext!.Request.Cookies["UserGmail"];
 

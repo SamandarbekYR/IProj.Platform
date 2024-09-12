@@ -8,8 +8,8 @@ services:
       dockerfile: ./src/IProj.Web/Dockerfile
     container_name: iproj-web
     ports:
-      - "4040:8080"
-      - "8081:8081"
+      - 3333:8080
+      - 4444:8081
     networks:
       - iproj-network
     restart: always           # Konteynerni qayta ishga tushuradi agar to'xtatilsa
@@ -21,8 +21,8 @@ services:
       dockerfile: ./src/IProj.Consumer/Dockerfile
     container_name: iproj-consumer
     ports:
-      - "8090:8080"
-      - "8091:8081"
+      - 8090:8080
+      - 8091:8081
     networks:
       - iproj-network 
     restart: always         # Konteynerni qayta ishga tushuradi agar to'xtatilsa

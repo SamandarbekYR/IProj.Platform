@@ -31,7 +31,7 @@ builder.Services.AddAuthentication(options =>
 }).AddCookie("Cookies")
   .AddOpenIdConnect("oidc", options =>
   {
-      options.Authority = "https://auth.iproj.uz";
+      options.Authority = "http://localhost:8080";
       options.ClientId = "oidcMVCApp";
       options.ClientSecret = "Wabase";
       options.ResponseType = "code";
@@ -60,17 +60,15 @@ using (var scope = app.Services.CreateScope())
     dbContext.Database.Migrate();
 }
 
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Home/Error");
-    app.UseHsts();
-}
 
-app.Use((context, next) =>
+app.UseExceptionHandler("/Home/Error");
+app.UseHsts();
+
+/*app.Use((context, next) =>
 {
     context.Request.Scheme = "https"; return next();
-});
-app.UseHttpsRedirection();
+});*/
+//app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseSerilogRequestLogging();
 app.UseRouting();
