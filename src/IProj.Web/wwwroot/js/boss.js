@@ -111,6 +111,12 @@ document.getElementById("sendMessageButton").addEventListener("click", async fun
     sendNextMessage();
 });
 
+document.getElementById("notificationView").addEventListener("click", function (event) {
+    event.preventDefault();
+    document.getElementById("divtoastr").style.display = "none";
+    document.getElementById("divMain").style.display = "block";
+
+ })
 function getSelectedUserEmails() {
     const checkboxes = document.querySelectorAll(".userCheckbox:checked");
     return Array.from(checkboxes).map(checkbox => {
@@ -124,12 +130,15 @@ function getSelectedUserEmails() {
 document.addEventListener('DOMContentLoaded', function () {
     document.getElementById("progressContainer").style.display = "none"
     document.getElementById("progressText").style.display = "none";
+
     setTimeout(function () {
         document.getElementById('loading').classList.add('hidden');
         document.getElementById('table-content').classList.remove('hidden');
 
     }, 3000); 
 });
+
+
 
 $(document).ready(function () {
     $('#profileImage').on('click', function () {
