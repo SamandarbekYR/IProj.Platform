@@ -8,7 +8,7 @@ using Serilog;
 
 namespace MVCLearn.Controllers
 {
-    [Authorize]
+   // [Authorize]
     public class MessagesController : Controller
     {
         private IUserRepository _usersrepository;
@@ -26,12 +26,12 @@ namespace MVCLearn.Controllers
         [HttpGet]
         public IActionResult Boss()
         {
-            var bossId = HttpContext.Request.Cookies["BossId"];
+            //var bossId = HttpContext.Request.Cookies["BossId"];
 
-            if (bossId == null)
-            {
-                return RedirectToAction("Login", "Accaunt");
-            }
+            //if (bossId == null)
+            //{
+            //    return RedirectToAction("Login", "Accaunt");
+            //}
 
             try
             {
@@ -43,12 +43,6 @@ namespace MVCLearn.Controllers
                 Log.Error($"Databasega ulanishda xatolik yuz berdi {ex}");
             }
             return View();
-        }
-
-        [HttpPost]
-        public IActionResult SendMessage()
-        {
-            return RedirectToAction("Boss");
         }
 
         [HttpGet]

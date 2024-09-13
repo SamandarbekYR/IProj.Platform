@@ -5,7 +5,7 @@ using IProj.DataAccess.Repositories.Messages;
 using IProj.DataAccess.Repositories.Users;
 using IProj.Service.Services.MessageBroker;
 using IProj.Web.Helpers;
-using IProj.Hubs;
+using IProj.Service.Hubs;
 using Serilog;
 using IProj.DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
@@ -91,7 +91,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Accaunt}/{action=Login}");
+    pattern: "{controller=Messages}/{action=Boss}");
 
 app.MapHub<NotificationHub>("/notificationHub");
 

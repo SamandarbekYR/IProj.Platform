@@ -1,0 +1,94 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Admin page</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/IProjAdmin.Web.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="sidebar">
+        <div class="header-container  " style="display:flex; align-items:center; justify-content:center; ">
+            <img src="~/assets/images/myproject.png" style="height:130px; width:auto;" />
+        </div>
+        <ul class="list-unstyled" style="margin-top:15px!important;">
+            <li class="mb-3">
+                <form asp-controller="Admin" asp-action="SendMessage" method="get">
+                    <button id="notificationView" type="submit" class="btn inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 whitespace-nowrap">
+                        Send message
+                    </button>
+                </form>
+            </li>
+            <li>
+                <form asp-controller="Messages" asp-action="Logout" method="post">
+                    <button id="logoutButton" type="submit" class="btn inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        Logout
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </div>
+
+
+    <div class="content">
+        <!--navbar-->
+        <div class="container">
+            <nav class="navbar navbar-expand-sm navbar-light bg-blue border-bottom box-shadow mb-3">
+                <div class="container-fluid d-flex justify-content-between align-items-center">
+                    <div class="myProject">My Project</div>
+
+                    <!-- Image and Dropdown -->
+                    <div class="dropdown" style="margin-right:30px;">
+                        <img src="~/assets/images/programmisth.jpg" class="rounded-circle" id="profileImage" alt="Profile Image" style="cursor: pointer;">
+                        <div class="dropdown-menu dropdown-menu-right text-center" style="margin-right:15px;" aria-labelledby="profileImage">
+                            <form asp-controller="Messages" asp-action="Logout" method="post">
+                                <button id="logoutButton" type="submit" class="btn btn-outline-danger"
+                                        style="height: 25px; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
+                                    Logout
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <!-- Main container -->
+        <div class="maincontainer" style="padding-top:25px;">
+            <main role="main" class="pb-3">
+               @RenderBody()
+            </main>
+        </div>
+
+    </div>
+    
+
+
+    <!-- Scripts -->
+    <script src="~/js/admin-signalr.js" asp-append-version="true"></script>
+    <link href="~/flowbite/flowbite.css" rel="stylesheet" />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#checkbox-all-search').change(function () {
+            $('.userCheckbox').prop('checked', $(this).prop('checked'));
+        });
+
+        $('#profileImage').on('click', function () {
+            $(this).next('.dropdown-menu').toggleClass('show');
+        });
+
+        $(document).on('click', function (event) {
+            if (!$(event.target).closest('.dropdown').length) {
+                $('.dropdown-menu').removeClass('show');
+            }
+        });
+
+    });
+</script>

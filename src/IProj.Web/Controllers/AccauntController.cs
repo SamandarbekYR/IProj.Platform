@@ -33,21 +33,7 @@ public class AccauntController : Controller
                 Expires = DateTimeOffset.UtcNow.AddDays(7)
             });
 
-            if (userRole.Equals("Owner"))
-            {
-                if (!string.IsNullOrEmpty(Gmail) && userId != null)
-                {
-                    HttpContext.Response.Cookies.Append("BossId", userId.ToString()!, new CookieOptions
-                    {
-                        HttpOnly = true,
-                        Expires = DateTimeOffset.UtcNow.AddDays(7)
-                    });
-                }
-
-                return RedirectToAction("Boss", "Messages");
-            }
-
-            else if (userRole.Equals("Worker"))
+             if (userRole.Equals("Worker"))
             {
                 if (!string.IsNullOrEmpty(Gmail) && userId != null)
                 {

@@ -15,12 +15,6 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
     <link rel="stylesheet" href="~/IProj.Web.styles.css" asp-append-version="true" />
-    <style>
-        body {
-            display: flex;
-            background-color: #F4F4F8;
-        }
-    </style>
 </head>
 <body>
     <!--Saidbar-->
@@ -33,7 +27,6 @@
                 <button id="notificationView" type="button" class="btn inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 whitespace-nowrap">
                     Send message
                 </button>
-
             </li>
             <li>
                 <form asp-controller="Messages" asp-action="Logout" method="post">
@@ -69,7 +62,7 @@
             </nav>
         </div>
         <!-- Main container -->
-        <div class="container mt-4">
+        <div class="maincontainer" style="padding-top:25px;">
             <main role="main" class="pb-3">
                 <div id="divMain" style="display:none">
                     <div id="divtoastr" class="fixed top-0 right-0 z-70 space-y-4 p-4" style="z-index:9990;">
