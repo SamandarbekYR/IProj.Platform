@@ -9,8 +9,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Boss Page</title>
-    <link rel="icon" type="image/x-icon" href="~/assets/images/logo.png" />
-    <link rel="shortcut icon" type="image/x-icon" href="~/assets/images/logo.png" />
+    <link rel="icon" type="image/x-icon" href="~/assets/images/myproject.png" />
+    <link rel="shortcut icon" type="image/x-icon" href="~/assets/images/myproject.png" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
@@ -26,13 +26,14 @@
     <!--Saidbar-->
     <div class="sidebar">
         <div class="header-container  " style="display:flex; align-items:center; justify-content:center; ">
-            <img src="~/assets/images/logo.png" style="height:130px; width:auto;" />
+            <img src="~/assets/images/myproject.png" style="height:130px; width:auto;" />
         </div>
         <ul class="list-unstyled" style="margin-top:15px!important;">
             <li class="mb-3">
-                <button id="notificationView" type="button" class="btn inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    SendMessage
+                <button id="notificationView" type="button" class="btn inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 whitespace-nowrap">
+                    Send message
                 </button>
+
             </li>
             <li>
                 <form asp-controller="Messages" asp-action="Logout" method="post">
@@ -70,8 +71,8 @@
         <!-- Main container -->
         <div class="container mt-4">
             <main role="main" class="pb-3">
-                <div id="divMain">
-                    <div id="divtoastr" class="fixed top-0 right-0 z-70 space-y-4 p-4" style="z-index:9990">
+                <div id="divMain" style="display:none">
+                    <div id="divtoastr" class="fixed top-0 right-0 z-70 space-y-4 p-4" style="z-index:9990;">
                         <div id="toast-success"
                              class="flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white relative z-50 rounded-lg shadow dark:text-gray-400 dark:bg-gray-800" role="alert">
                             <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg dark:bg-green-800 dark:text-green-200">
@@ -120,12 +121,13 @@
                         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
 
                             <!-- Progress bar start -->
-                            <div id="progressContainer" class="relative w-full h-2 bg-gray-200 rounded-full overflow-hidden mt-4"
-                                 style="position:relative; width:600px; height:2rem; background-color:#e2e2e2; border-radius:0.5rem; margin:auto;">
+                            <div id="progressContainer"  class="relative w-full h-2 bg-gray-200 rounded-full overflow-hidden mt-4"
+                                 style="position:relative; width:600px; height:2rem; background-color:#e2e2e2; border-radius:0.5rem; margin:auto;
+                                       display:none">
                                 <div id="progressBar" class="absolute top-0 left-0 h-full bg-blue-600 transition-all duration-500"
                                      style="position:absolute; top:0; left:0; height:100%; background-color:blue; width:0%; transition:width 0.3s ease;"></div>
                                 <div id="progressText" class="absolute top-0 left-1/2 transform -translate-x-1/2 text-center w-full h-full flex items-center justify-center"
-                                     style="font-size:1rem; color:chocolate; z-index:10; ">
+                                     style="font-size:1rem; color:chocolate; z-index:10; display:none ">
                                 </div>
                             </div>
 
@@ -213,9 +215,6 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-
-            document.getElementById('divMain').style.display = 'none'; 
-           
 
             $('#checkbox-all-search').change(function () {
                 $('.userCheckbox').prop('checked', $(this).prop('checked'));

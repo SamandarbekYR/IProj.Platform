@@ -128,13 +128,11 @@ function getSelectedUserEmails() {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById("progressContainer").style.display = "none"
-    document.getElementById("progressText").style.display = "none";
+
 
     setTimeout(function () {
         document.getElementById('loading').classList.add('hidden');
         document.getElementById('table-content').classList.remove('hidden');
-
     }, 3000); 
 });
 
