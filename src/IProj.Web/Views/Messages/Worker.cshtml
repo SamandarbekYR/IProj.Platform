@@ -2,75 +2,139 @@
 @{
     int newMessageCount = ViewData["newMessageCount"] != null
                           ? Convert.ToInt32(ViewData["newMessageCount"]) : 0;
+    Layout = null;
 }
-<!-- Bootstrap CSS -->
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Worker Page</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/IProj.Web.styles.css" asp-append-version="true" />
+    <style>
+        body {
+            display: flex;
+            background-color: #F4F4F8;
+        }
+    </style>
+</head>
+<body>
 
-<!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.min.js"></script>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        
+        <div class="header-container  " style="display:flex; align-items:center; justify-content:center; ">
+            <img src="~/assets/images/logo.png" style="height:130px; width:auto;" />
+        </div>
+        <ul class="list-unstyled" style="margin-top:15px!important;" >
+            <li class="mb-3">
+                <button id="notificationBell" type="button" class="btn inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    Messages
+                    <span id="notificationCount" class="badge inline-flex items-center justify-center w-4 h-4 ms-2 text-xs font-semibold text-blue-800 bg-blue-200 rounded-full">
+                        @newMessageCount
+                    </span>
+                </button>
+            </li>
+            <li>
+                 <form asp-controller="Messages" asp-action="Logout" method="post">
+                <button id="logoutButton" type="submit" class="btn inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    Logout
+                </button>
+                     </form>
+            </li>
+        </ul>
+    </div>
 
-<div style=" display: flex; align-items: center; justify-content: space-between; margin-top: 20px" class="w-full px-3 py-2 border-t dark:border-gray-600">
-    <button id="notificationBell" class="btn btn-primary">
-        🔔 Notifications <span id="notificationCount">@newMessageCount</span>
-    </button>
-    <form asp-action="Logout" method="post">
-        <button type="submit" class="btn btn-outline-danger">Logout</button>
-    </form>
-</div>
 
-<div id="notificationsModal" class="modal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div>
-                    <h5 class="modal-title">Notifications</h5>
+    <!-- Main Content -->
+    <div class="content">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-sm navbar-light bg-blue border-bottom box-shadow mb-3">
+            <div class="container-fluid d-flex justify-content-between align-items-center">
+                <div class="myProject">My Project</div>
+
+                <!-- Image and Dropdown -->
+                <div class="dropdown" style="margin-right:75px;">
+                    <img src="~/assets/images/programmisth.jpg" class="rounded-circle" id="profileImage" alt="Profile Image" style="cursor: pointer;">
+                    <div class="dropdown-menu dropdown-menu-right text-center" style="margin-right:15px;" aria-labelledby="profileImage">
+                        <form asp-controller="Messages" asp-action="Logout" method="post">
+                            <button id="logoutButton" type="submit" class="btn btn-outline-danger"
+                                    style="height: 25px; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
+                                Logout
+                            </button>
+                        </form>
+                    </div>
                 </div>
-                    <button type="submit" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
             </div>
-            <div class="modal-body">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Message</th>
-                        </tr>
-                    </thead>
-                    <tbody id="notificationsTable">
-                        @if (Model != null && Model.Any())
-                        {
-                            @foreach (var userMessage in Model)
-                            {
-                                <tr data-message-id="@userMessage.Id">
-                                    <td>@userMessage.SendTime</td>
-                                    <td>@userMessage.MessageContent</td>
+        </nav>
+
+        <!-- Notifications Modal -->
+        <div id="notificationsModal" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Notifications</h5>
+                     
+                    </div>
+                    <div class="modal-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Message</th>
                                 </tr>
-                            }
-                        }
-                    </tbody>
-                </table>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </thead>
+                            <tbody id="notificationsTable">
+                                @if (Model != null && Model.Any())
+                                {
+                                    @foreach (var userMessage in Model)
+                                    {
+                                        <tr data-message-id="@userMessage.Id">
+                                            <td>@userMessage.SendTime</td>
+                                            <td>@userMessage.MessageContent</td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button style="color:blue;" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<script src="~/js/worker.js"></script>
-<script>
-    $(document).ready(function () {
-        
-        $('#notificationBell').click(function () {
-            $('#notificationsModal').modal('show');
-        });
+    <link href="~/flowbite/flowbite.css" rel="stylesheet" />
+    <!-- Scripts -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/worker.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#notificationBell').click(function () {
+                $('#notificationsModal').modal('show');
+            });
 
-        // Modalni yopish uchun 'x' yoki 'Close' tugmasi bosilganda
-        $('.close, .btn-secondary').click(function () {
-            $('#notificationsModal').modal('hide');
+            // Close modal
+            $('.close, .btn-secondary').click(function () {
+                $('#notificationsModal').modal('hide');
+            });
+
+            $('#profileImage').on('click', function () {
+                $(this).parent('.dropdown').toggleClass('show');
+            });
+
+            // Optional: Hide the dropdown when clicking outside
+            $(document).on('click', function (event) {
+                if (!$(event.target).closest('.dropdown').length) {
+                    $('.dropdown').removeClass('show');
+                }
+            });
         });
-    });
-</script>
+    </script>
+</body>
+</html>

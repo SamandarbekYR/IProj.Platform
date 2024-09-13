@@ -52,3 +52,58 @@ body {
 .dropdown.show .dropdown-menu {
     display: block; /* Show when clicked */
 }
+
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #FEFEFE;
+    color: white;
+    padding: 20px;
+    z-index: 1;
+    border-radius:15px;
+}
+
+    .sidebar .btn {
+        width: 100%;
+        margin-bottom: 15px;
+    }
+
+.content {
+    margin-left: 250px;
+    padding: 20px;
+    width: 100%;
+}
+
+.navbar {
+    z-index: 2; /* Make sure navbar stays above the sidebar */
+    background-color: #FEFEFE;
+    border-radius:15px;
+}
+
+.myProject {
+    text-align: center;
+    color: #6669FA;
+    font-family: 'JetBrains Mono';
+    font-weight: bold;
+    align-items:center;
+
+}
+
+
+
+.sidebar li {
+    margin-bottom: 15px;
+}
+
+.sidebar .btn {
+    width: 200px;
+    height: 45px; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem; 
+    color:blue;
+}

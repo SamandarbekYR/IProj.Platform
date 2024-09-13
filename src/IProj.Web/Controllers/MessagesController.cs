@@ -8,7 +8,7 @@ using Serilog;
 
 namespace MVCLearn.Controllers
 {
-    [Authorize]
+   [Authorize]
     public class MessagesController : Controller
     {
         private IUserRepository _usersrepository;
@@ -71,59 +71,11 @@ namespace MVCLearn.Controllers
                 ViewData["newMessageCount"] = newMessageCount;
                 return View(messages);
             }
-         
+
             return View();
         }
 
-        [HttpGet]
-        public IActionResult GetMessagesForWorker()
-        {
-            var workerId = HttpContext.Request.Cookies["WorkerId"];
-
-            if (workerId == null)
-            {
-                return RedirectToAction("Login", "Accaunt");
-            }
-
-            var messages = _message.GetAll().Where(items => items.ReceiverId == Guid.Parse(workerId)).ToList();
-
-            return Json(messages);
-        }
-
-
-        //[HttpGet]
-        //public async Task<IActionResult> GetMessages()
-        //{
-        //    if (!HttpContext.Request.Cookies.ContainsKey("BossId"))
-        //    {
-        //        return RedirectToAction("Login", "Accaunt");
-        //    }
-
-        //    else
-        //    {
-        //        var BossId = HttpContext.Request.Cookies["BossId"];
-        //        var messages = await _message.GetBySenderIdAllMessagesAsync(Guid.Parse(BossId!));
-        //        List<MessageView> messageViews = new List<MessageView>();
-
-        //        foreach (var message in messages)
-        //        {
-        //            var receiverInfo = await _usersrepository.GetById(message.ReceiverId);
-
-        //            if (receiverInfo is not null)
-        //            {
-        //                MessageView messageView = new MessageView();
-        //                messageView.ReceiveName = receiverInfo.FirstName;
-        //                messageView.MessageContent = message.MessageContent;
-        //                messageView.SendTime = message.SendTime;
-        //                messageView.ReadTime = message.ReadTime;
-        //                messageView.ReadStatus = message.IsRead;
-        //                messageViews.Add(messageView);
-        //            }
-        //        }
-
-        //        return Json(messageViews);
-        //    }
-        //}
+ 
 
         [HttpPost]
         public IActionResult Logout()
