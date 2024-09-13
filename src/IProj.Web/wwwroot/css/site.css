@@ -18,7 +18,8 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    background-color: #F4F4F8;
 }
 
 .hidden {
@@ -73,7 +74,7 @@ body {
 
 .content {
     margin-left: 250px;
-    padding: 20px;
+    padding: 15px;
     width: 100%;
 }
 

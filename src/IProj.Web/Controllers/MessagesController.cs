@@ -8,7 +8,7 @@ using Serilog;
 
 namespace MVCLearn.Controllers
 {
-   [Authorize]
+  // [Authorize]
     public class MessagesController : Controller
     {
         private IUserRepository _usersrepository;
@@ -26,12 +26,12 @@ namespace MVCLearn.Controllers
         [HttpGet]
         public IActionResult Boss()
         {
-            var bossId = HttpContext.Request.Cookies["BossId"];
+            //var bossId = HttpContext.Request.Cookies["BossId"];
 
-            if (bossId == null)
-            {
-                return RedirectToAction("Login", "Accaunt");
-            }
+            //if (bossId == null)
+            //{
+            //    return RedirectToAction("Login", "Accaunt");
+            //}
 
             try
             {
@@ -54,23 +54,23 @@ namespace MVCLearn.Controllers
         [HttpGet]
         public IActionResult Worker()
         {
-            var userGmail = HttpContext.Request.Cookies["UserGmail"];
-            if (userGmail == null)
-            {
-                return RedirectToAction("Login", "Accaunt");
-            }
+            //var userGmail = HttpContext.Request.Cookies["UserGmail"];
+            //if (userGmail == null)
+            //{
+            //    return RedirectToAction("Login", "Accaunt");
+            //}
 
-            var receiverId = _usersrepository.GetAll().FirstOrDefault(u => u.Gmail == userGmail);
+            //var receiverId = _usersrepository.GetAll().FirstOrDefault(u => u.Gmail == userGmail);
 
-            if (receiverId != null)
-            {
-                var messages = _message.GetAll().Where(i => i.ReceiverId == receiverId.Id &&
-                                                       i.IsRead == false).ToList();
+            //if (receiverId != null)
+            //{
+            //    var messages = _message.GetAll().Where(i => i.ReceiverId == receiverId.Id &&
+            //                                           i.IsRead == false).ToList();
 
-                var newMessageCount = messages.Count;
-                ViewData["newMessageCount"] = newMessageCount;
-                return View(messages);
-            }
+            //    var newMessageCount = messages.Count;
+            //    ViewData["newMessageCount"] = newMessageCount;
+            //    return View(messages);
+            //}
 
             return View();
         }

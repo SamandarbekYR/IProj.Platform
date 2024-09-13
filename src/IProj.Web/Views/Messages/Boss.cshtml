@@ -1,10 +1,73 @@
 ﻿@model List<IProj.Domain.Entities.Users.User>
 @{
     ViewData["Title"] = "Boss Page";
+    Layout = null;
 }
-<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
 
-<div id="divMain">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Worker Page</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
+    <link rel="stylesheet" href="~/IProj.Web.styles.css" asp-append-version="true" />
+    <style>
+        body {
+            display: flex;
+            background-color: #F4F4F8;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="header-container  " style="display:flex; align-items:center; justify-content:center; ">
+            <img src="~/assets/images/logo.png" style="height:130px; width:auto;" />
+        </div>
+        <ul class="list-unstyled" style="margin-top:15px!important;">
+            <li class="mb-3">
+                <button id="notificationBell" type="button" class="btn inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    SendMessage
+                </button>
+            </li>
+            <li>
+                <form asp-controller="Messages" asp-action="Logout" method="post">
+                    <button id="logoutButton" type="submit" class="btn inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        Logout
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </div>
+
+    <div class="content">
+        <nav class="navbar navbar-expand-sm navbar-light bg-blue border-bottom box-shadow mb-3">
+            <div class="container-fluid d-flex justify-content-between align-items-center">
+                <div class="myProject">My Project</div>
+
+                <!-- Image and Dropdown -->
+                <div class="dropdown" style="margin-right:30px;">
+                    <img src="~/assets/images/programmisth.jpg" class="rounded-circle" id="profileImage" alt="Profile Image" style="cursor: pointer;">
+                    <div class="dropdown-menu dropdown-menu-right text-center" style="margin-right:15px;" aria-labelledby="profileImage">
+                        <form asp-controller="Messages" asp-action="Logout" method="post">
+                            <button id="logoutButton" type="submit" class="btn btn-outline-danger"
+                                    style="height: 25px; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
+                                Logout
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </nav>
+  </div>
+    </body>
+</html>
+<!-- Sidebar -->
+
+
+@* <div id="divMain">
     <div id="divtoastr" class="fixed top-0 right-0 z-70 space-y-4 p-4" style="z-index:9990">
         <div id="toast-success"
              class="flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white relative z-50 rounded-lg shadow dark:text-gray-400 dark:bg-gray-800" role="alert">
@@ -79,7 +142,7 @@
             </div>
         </div> *@
 
-        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+@*         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
             <div class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-white dark:bg-gray-900">
                 <div>
                     <!-- Dropdown menu -->
@@ -169,17 +232,12 @@
             </div>
         </div>
 </div>
-</div>
+</div> *@
 
-<link href="~/css/site.css" rel="stylesheet" />
 <link href="~/flowbite/flowbite.css" rel="stylesheet" />
-<link href="~/flowbite/flowbite.min.css" rel="stylesheet" />
-<script src="~/flowbite/flowbite.js"></script>
-<script src="~/flowbite/flowbite.min.js"></script>
-<script src="~/jquery/jquery.js"></script>
-<script src="~/jquery/jquery.min.js"></script>
-<script src="~/jquery/jquery.slim.js"></script>
-<script src="~/jquery/jquery.slim.min.js"></script>
+<!-- Scripts -->
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="~/js/boss.js"></script>
 
 @section Scripts {
@@ -191,6 +249,17 @@
 
             $('#checkbox-all-search').change(function () {
                 $('.userCheckbox').prop('checked', $(this).prop('checked'));
+            });
+
+            $('#profileImage').on('click', function () {
+                $(this).parent('.dropdown').toggleClass('show');
+            });
+
+            // Optional: Hide the dropdown when clicking outside
+            $(document).on('click', function (event) {
+                if (!$(event.target).closest('.dropdown').length) {
+                    $('.dropdown').removeClass('show');
+                }
             });
 
         });
