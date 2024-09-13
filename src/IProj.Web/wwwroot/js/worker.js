@@ -70,3 +70,15 @@ function playNotificationSound() {
     audio.play();
 }
 
+$(document).ready(function () {
+    $('#profileImage').on('click', function () {
+        $(this).parent('.dropdown').toggleClass('show');
+    });
+
+    // Optional: Hide the dropdown when clicking outside
+    $(document).on('click', function (event) {
+        if (!$(event.target).closest('.dropdown').length) {
+            $('.dropdown').removeClass('show');
+        }
+    });
+});
