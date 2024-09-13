@@ -91,7 +91,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Messages}/{action=Worker}");
+    pattern: "{controller=Accaunt}/{action=Login}");
 
 app.MapHub<NotificationHub>("/notificationHub");
 
