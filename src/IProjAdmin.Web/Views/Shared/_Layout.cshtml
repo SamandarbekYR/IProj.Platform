@@ -4,6 +4,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Admin page</title>
+    <link rel="icon" type="image/x-icon" href="~/assets/images/myproject.png" />
+    <link rel="shortcut icon" type="image/x-icon" href="~/assets/images/myproject.png" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/IProjAdmin.Web.styles.css" asp-append-version="true" />
@@ -22,7 +24,7 @@
                 </form>
             </li>
             <li>
-                <form asp-controller="Messages" asp-action="Logout" method="post">
+                <form asp-controller="Admin" asp-action="Logout" method="post">
                     <button id="logoutButton" type="submit" class="btn inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                         Logout
                     </button>
@@ -43,7 +45,7 @@
                     <div class="dropdown" style="margin-right:30px;">
                         <img src="~/assets/images/programmisth.jpg" class="rounded-circle" id="profileImage" alt="Profile Image" style="cursor: pointer;">
                         <div class="dropdown-menu dropdown-menu-right text-center" style="margin-right:15px;" aria-labelledby="profileImage">
-                            <form asp-controller="Messages" asp-action="Logout" method="post">
+                            <form asp-controller="Admin" asp-action="Logout" method="post">
                                 <button id="logoutButton" type="submit" class="btn btn-outline-danger"
                                         style="height: 25px; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
                                     Logout

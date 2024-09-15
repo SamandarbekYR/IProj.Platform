@@ -26,7 +26,7 @@ builder.Services.AddAuthentication(options =>
   .AddOpenIdConnect("oidc", options =>
   {
       options.Authority = "https://auth.iproj.uz";
-      options.ClientId = "oidcMVCApp";
+      options.ClientId = "oidcMVCAppAdmin";
       options.ClientSecret = "Wabase";
       options.ResponseType = "code";
       options.UsePkce = true;
@@ -38,7 +38,7 @@ builder.Services.AddAuthentication(options =>
       options.Scope.Add("email");
       options.Scope.Add("role");
       options.GetClaimsFromUserInfoEndpoint = true;
-      options.RequireHttpsMetadata = false;
+      options.RequireHttpsMetadata = true;
       options.SaveTokens = true;
       options.CallbackPath = "/signin-oidc";
   });
@@ -52,6 +52,12 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+
+app.Use((context, next) =>
+{
+    context.Request.Scheme = "https"; return next();
+});
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

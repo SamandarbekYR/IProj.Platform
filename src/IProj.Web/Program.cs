@@ -45,7 +45,7 @@ builder.Services.AddAuthentication(options =>
       options.Scope.Add("email");
       options.Scope.Add("role");
       options.GetClaimsFromUserInfoEndpoint = true;
-      options.RequireHttpsMetadata = false;
+      options.RequireHttpsMetadata = true;
       options.SaveTokens = true;
       options.CallbackPath = "/signin-oidc";
   });

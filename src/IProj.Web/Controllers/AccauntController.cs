@@ -33,7 +33,7 @@ public class AccauntController : Controller
                 Expires = DateTimeOffset.UtcNow.AddDays(7)
             });
 
-             if (userRole.Equals("Worker"))
+            if (userRole.Equals("Worker"))
             {
                 if (!string.IsNullOrEmpty(Gmail) && userId != null)
                 {
@@ -49,7 +49,7 @@ public class AccauntController : Controller
 
             else
             {
-                return RedirectToAction("");
+                return Redirect("https://admin.iproj.uz");
             }
         }
         return View();
