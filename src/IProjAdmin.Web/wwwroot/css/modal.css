@@ -1,0 +1,83 @@
+﻿body {
+    background-color: #f9f9fa
+}
+
+.flex {
+    -webkit-box-flex: 1;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto
+}
+
+
+
+.progress.progress-md {
+    height: 14px;
+}
+
+.template-demo .progress {
+    margin-top: 1.5rem
+}
+
+.progress {
+    border-radius: 3px;
+    height: 14px;
+}
+
+
+.progress-bar-style2 .progress {
+    overflow: visible
+}
+
+.progress-bar-style2 .progress-bar span {
+    color: #000;
+    position: absolute;
+    right: 0;
+    text-align: right;
+    top: 21px;
+    font-size: 11px;
+}
+
+.progress-bar-style2 .progress-bar {
+    position: relative;
+    overflow: visible
+}
+
+.progress-bar-style2 .progress {
+    height: 15px;
+}
+
+
+
+
+.progress-bar-style2 .progress-name {
+    font-size: 10px;
+    margin: 5px 0 20px
+}
+
+.progress-bar-style3 .progress-bar-sub {
+    margin-bottom: 40px;
+}
+
+.progress-bar-style3 .progress {
+    height: 26px;
+}
+
+.progress-bar-style3 .progress-bar {
+    font-size: 11px;
+    text-transform: uppercase;
+    line-height: 25px;
+    text-align: left;
+    padding: 0 10px
+}
+
+
+
+.dropdown-item {
+    display: flex;
+    align-items: center; /* Center items vertically */
+}
+
+.dropdown-text {
+    flex: 1; /* Allow text to take remaining space */
+}
+

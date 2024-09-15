@@ -53,5 +53,18 @@ namespace IProjAdmin.Web.Controllers
                 RedirectUri = Url.Action("Login", "Accaunt")
             }, "Cookies", "oidc");
         }
+
+        [HttpGet]
+        public IActionResult ViewMessageModal()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult Reload()
+        {
+            return RedirectToAction("Main");
+        }
+
     }
 }
