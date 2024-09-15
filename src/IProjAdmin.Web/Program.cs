@@ -68,7 +68,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Admin}/{action=Main}");
+    pattern: "{controller=Home}/{action=Index}");
 
 app.MapHub<NotificationHub>("/notificationHub");
 
