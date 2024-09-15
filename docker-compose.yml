@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   iproj-web:
-    image: iproj-web-image   # Imidj nomi
+    image: iproj-web-image   
     build:
       context: .
       dockerfile: ./src/IProj.Web/Dockerfile
@@ -12,10 +12,10 @@ services:
       - "8081:8081"
     networks:
       - iproj-network
-    restart: always           # Konteynerni qayta ishga tushuradi agar to'xtatilsa
+    restart: always          
 
   iproj-consumer:
-    image: iproj-consumer-image   # Imidj nomi
+    image: iproj-consumer-image
     build:
       context: .
       dockerfile: ./src/IProj.Consumer/Dockerfile
@@ -25,7 +25,19 @@ services:
       - "8091:8081"
     networks:
       - iproj-network 
-    restart: always         # Konteynerni qayta ishga tushuradi agar to'xtatilsa
+    restart: always      
+
+  iproj-admin:
+    image: iproj-admin-image  
+    build:
+      context: .
+      dockerfile: ./src/IProjAdmin.Web/Dockerfile
+    container_name: iproj-admin
+    ports:
+      - "6060:8080"         
+    networks:
+      - iproj-network
+    restart: always      
 
 networks:
   iproj-network:
