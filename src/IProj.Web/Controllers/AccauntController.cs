@@ -49,7 +49,7 @@ public class AccauntController : Controller
 
             else
             {
-                return View();
+                return RedirectToAction("");
             }
         }
         return View();

@@ -1,5 +1,6 @@
 ﻿@model List<IProj.Domain.Entities.Users.User>
 
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
 <div id="divMain">
     <!-- Form and textarea -->
@@ -11,9 +12,9 @@
                     <textarea id="commentmessage" rows="4" class="w-full px-0 text-sm text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400" placeholder="Write a message..."></textarea>
                 </div>
                 <div class="flex items-center justify-between px-3 py-2 border-t dark:border-gray-600">
-                    <button type="submit" id="sendMessageButton" class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800">
-                        Send Message
-                    </button>
+                    <button id="sendMessageButton" type="button" class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800">
+                            Send Message
+                        </button>
                     <button id="loadingButton" disabled type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 inline-flex items-center" style="display: none;">
                         <svg aria-hidden="true" role="status" class="inline w-4 h-4 me-3 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB" />
@@ -27,18 +28,7 @@
 
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
 
-            <!-- Progress bar start -->
-            <div id="progressContainer" class="relative w-full h-2 bg-gray-200 rounded-full overflow-hidden mt-4"
-                 style="position:relative; width:600px; height:2rem; background-color:#e2e2e2; border-radius:0.5rem; margin:auto;
-                                       display:none">
-                <div id="progressBar" class="absolute top-0 left-0 h-full bg-blue-600 transition-all duration-500"
-                     style="position:absolute; top:0; left:0; height:100%; background-color:blue; width:0%; transition:width 0.3s ease;"></div>
-                <div id="progressText" class="absolute top-0 left-1/2 transform -translate-x-1/2 text-center w-full h-full flex items-center justify-center"
-                     style="font-size:1rem; color:chocolate; z-index:10; display:none ">
-                </div>
-            </div>
-
-            <!--Progress bar end-->
+     
             <!--Loading-->
             <div id="loading" class="flex justify-center items-center min-h-screen">
                 <div class="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full text-blue-600 mb-4" role="status">
@@ -71,7 +61,7 @@
                                     <td class="w-4 p-4">
                                         <div class="flex items-center">
                                             <input type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded userCheckbox focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                                                   data-id="@user.Id" data-email="@user.Gmail">
+                                                   data-id="@user.Id" data-email="@user.Gmail" data-firstname="@user.FirstName" data-position="@user.Position" >
                                             <label for="checkbox-table-search-@user.Id" class="sr-only">checkbox</label>
                                         </div>
                                     </td>
@@ -97,9 +87,75 @@
                     </tbody>
                 </table>
             </div>
+
+
         </div>
     </div>
 </div>
+
+
+
+<div id="notificationsModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width:700px;">
+            <div class="modal-header">
+                <span class="text-base font-medium text-blue-700 dark:text-white">Information</span>
+                <h1 id="modalheader" class="text-base font-medium text-blue-700 dark:text-white">Sending message to <span id="usersCount">10</span> users ...</h1>
+            </div>
+            <div class="modal-body">
+                <div class="container" >
+                    <div class="flex justify-between mb-1">
+                        <span id="whoInfo" class="text-base font-medium text-blue-700 dark:text-white">Message is being sent to <span id="userEmail">Samandarbek@gmail.com</span>  ....</span>
+                        <span id="newProgressText" class="text-sm font-medium text-blue-700 dark:text-white">45%</span>
+                    </div>
+                    <div  class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                        <div id="newProgresBar" class="bg-blue-600 h-2.5 rounded-full" style="width:0%"></div>
+                    </div>
+                    <table class="table align-middle mb-0 bg-white">
+                        <thead class="bg-light">
+                            <tr>
+                                <th>Name</th>
+                                <th>Status</th>
+                                <th>Position</th>
+                            </tr>
+                        </thead>
+                        <tbody id="userTableBody">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-between">
+                <div class="inline-flex rounded-md shadow-sm" role="group">
+                    <button style="color:limegreen!important" type="button" class="success-btn px-4 py-2 text-sm font-medium bg-white border border-gray-200 rounded-s-lg hover:bg-gray-100  focus:z-10 focus:ring-2  focus:text-blue-700 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white">
+                        Success
+                        <span id="successCount" style="color:limegreen; height:20px; width:20px; font-size:16px;" class="inline-flex items-center justify-center w-4 h-4 ms-2 text-xs font-semibold text-blue-800 bg-blue-200 rounded-full">
+                            0
+                        </span>
+                    </button>
+                    <button style="color:red" type="button" class="error-btn px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-e-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2  focus:text-blue-700 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white">
+                        Error
+                        <span id="failedCount" style="color:red; height:20px; width:20px; font-size:16px;" class="inline-flex items-center justify-center w-4 h-4 ms-2 text-xs font-semibold text-blue-800 bg-blue-200 rounded-full">
+                            0
+                        </span>
+                    </button>
+                </div>
+                <form asp-controller="Admin" asp-action="Reload" method="get">
+                    <button id="closeModal" type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        Close
+                        <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
+                        </svg>
+                    </button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/modal.js"></script>
+
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script src="~/js/admin-signalr.js"></script>
