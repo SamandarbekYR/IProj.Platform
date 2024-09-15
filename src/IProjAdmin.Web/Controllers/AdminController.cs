@@ -1,11 +1,13 @@
 ﻿using IProj.DataAccess.Interfaces.Users;
 using IProj.DataAccess.Repositories.Users;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 
 namespace IProjAdmin.Web.Controllers
 {
+    [Authorize]
     public class AdminController : Controller
     {
         private IUserRepository _userRepository;
@@ -17,12 +19,12 @@ namespace IProjAdmin.Web.Controllers
         [HttpGet]
         public IActionResult SendMessage()
         {
-            //var bossId = HttpContext.Request.Cookies["BossId"];
+            var bossId = HttpContext.Request.Cookies["BossId"];
 
-            //if (bossId == null)
-            //{
-            //    return RedirectToAction("Login", "Accaunt");
-            //}
+            if (bossId == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
 
             try
             {
@@ -53,6 +55,7 @@ namespace IProjAdmin.Web.Controllers
                 RedirectUri = Url.Action("Login", "Accaunt")
             }, "Cookies", "oidc");
         }
+
 
         [HttpGet]
         public IActionResult ViewMessageModal()

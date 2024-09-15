@@ -32,7 +32,7 @@ public class RabbitMqProducer : IRabbitMqProducer
 
             _connection = factory.CreateConnection();
             _channel = _connection.CreateModel();
-            _channel.QueueDeclare(queue: _config["Queue"],
+            _channel.QueueDeclare(queue: "MessageQueue",
                                   durable: true, exclusive: false,
                                   autoDelete: false, arguments: null);
 

@@ -1,9 +1,11 @@
 using IProjAdmin.Web.Helpers;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IProjAdmin.Web.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         public async Task<IActionResult> Index()
@@ -38,7 +40,7 @@ namespace IProjAdmin.Web.Controllers
 
                 else
                 {
-                    return View();
+                    return Redirect("https://iproj.uz");
                 }
             }
             return View();
