@@ -9,7 +9,6 @@ using IProjAdmin.Web.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Xizmatlarni qo'shish
 builder.Services.AddControllersWithViews();
 builder.Services.AddCustomDbContext(builder.Configuration);
 builder.Services.AddCustomControllers();
@@ -18,7 +17,6 @@ builder.Services.AddTransient<IMessageRepository, MessageRepository>();
 builder.Services.AddTransient<IRabbitMqProducer, RabbitMqProducer>();
 builder.Services.AddSignalR();
 
-// CORS konfiguratsiyasi
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAllOrigins", builder =>
@@ -37,7 +35,6 @@ builder.Services.AddCors(options =>
     });
 });
 
-// Authentication konfiguratsiyasi
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultScheme = "Cookies";
@@ -73,12 +70,16 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.Use((context, next) =>
+{
+    context.Request.Scheme = "https"; return next();
+});
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
 
-// CORS siyosatini qo'llash
 app.UseCors("AllowAllOrigins");
 
 app.UseAuthentication();
