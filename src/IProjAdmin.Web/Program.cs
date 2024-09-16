@@ -18,7 +18,7 @@ builder.Services.AddTransient<IMessageRepository, MessageRepository>();
 builder.Services.AddTransient<IRabbitMqProducer, RabbitMqProducer>();
 builder.Services.AddSignalR();
 
-// CORS xizmati qo'shish
+/*// CORS xizmati qo'shish
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAllOrigins", builder =>
@@ -31,7 +31,7 @@ builder.Services.AddCors(options =>
             .SetIsOriginAllowedToAllowWildcardSubdomains();
     });
 });
-
+*/
 
 
 builder.Services.AddAuthentication(options =>
@@ -71,15 +71,19 @@ if (!app.Environment.IsDevelopment())
 }
 
 
+app.Use((context, next) =>
+{
+    context.Request.Scheme = "https"; return next();
+});
 
-app.UseCors("AllowAllOrigins");
+//app.UseCors("AllowAllOrigins");
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}");
