@@ -2,7 +2,7 @@
 {
     public class SendMessageToSelectedUsers
     {
-        public Guid MessageId { get; set; }
+        public Guid? MessageId { get; set; }
         public string MessageContent { get; set; } = string.Empty;
     }
 }
