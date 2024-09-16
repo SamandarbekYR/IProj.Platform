@@ -9,7 +9,7 @@ using IProjAdmin.Web.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Xizmatlarni qo'shish
 builder.Services.AddControllersWithViews();
 builder.Services.AddCustomDbContext(builder.Configuration);
 builder.Services.AddCustomControllers();
@@ -18,7 +18,7 @@ builder.Services.AddTransient<IMessageRepository, MessageRepository>();
 builder.Services.AddTransient<IRabbitMqProducer, RabbitMqProducer>();
 builder.Services.AddSignalR();
 
-/*// CORS xizmati qo'shish
+// CORS konfiguratsiyasi
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAllOrigins", builder =>
@@ -27,13 +27,17 @@ builder.Services.AddCors(options =>
             .AllowAnyOrigin()
             .AllowAnyMethod()
             .AllowAnyHeader()
-            .WithOrigins("https://admin.iproj.uz", "https://iproj.uz")
+            .WithOrigins("https://admin.iproj.uz",
+                         "https://iproj.uz",
+                         "https://admin.iproj.uz/Admin/SendMessage",
+                         "https://iproj.uz/Messages/Worker"
+                          )
+            .AllowCredentials()
             .SetIsOriginAllowedToAllowWildcardSubdomains();
     });
 });
-*/
 
-
+// Authentication konfiguratsiyasi
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultScheme = "Cookies";
@@ -62,33 +66,28 @@ builder.Services.AddAuthentication(options =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// HTTP so'rovlarini sozlash
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
-
-app.Use((context, next) =>
-{
-    context.Request.Scheme = "https"; return next();
-});
-
-//app.UseCors("AllowAllOrigins");
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
 
+// CORS siyosatini qo'llash
+app.UseCors("AllowAllOrigins");
+
 app.UseAuthentication();
 app.UseAuthorization();
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}");
 
-app.MapHub<NotificationHub>("/notificationHub");
-app.MapControllers(); 
+app.MapHub<NotificationHub>("/notificationHub").RequireCors("AllowAllOrigins");
 
 app.Run();
