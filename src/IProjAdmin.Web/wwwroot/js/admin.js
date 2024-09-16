@@ -68,7 +68,7 @@ document.getElementById("sendMessageButton").addEventListener("click", async fun
     let failedCount = document.getElementById('failedCount');
     let newProgresBar = document.getElementById('newProgresBar');
     let newProgressText = document.getElementById('newProgressText');
-    let whoInfo = document.getElementById('whoInfo');
+    let whoInfos = document.getElementById('whoInfo');
     let userEmail = document.getElementById('userEmail');
     let userTableBody = document.getElementById('userTableBody');
 
@@ -118,9 +118,9 @@ document.getElementById("sendMessageButton").addEventListener("click", async fun
 
             newProgressText.textContent = ' ';
             document.getElementById('modalheader').textContent = 'The process has been completed';
-            document.getElementById('usersCount').textContent = ' ';
-            whoInfo.textContent = ' ';
+            whoInfos.textContent = 'The process has been completed';
             userEmail.textContent = ' ';
+            /*//document.getElementById('usersCount').innerHTML = ' ';*/
             return;
         }
 

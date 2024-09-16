@@ -17,6 +17,23 @@ builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<IMessageRepository, MessageRepository>();
 builder.Services.AddTransient<IRabbitMqProducer, RabbitMqProducer>();
 builder.Services.AddSignalR();
+
+// CORS xizmati qo'shish
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllOrigins", builder =>
+    {
+        builder
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .WithOrigins("https://admin.iproj.uz", "https://iproj.uz")
+            .SetIsOriginAllowedToAllowWildcardSubdomains();
+    });
+});
+
+
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultScheme = "Cookies";
@@ -54,11 +71,8 @@ if (!app.Environment.IsDevelopment())
 }
 
 
-app.Use((context, next) =>
-{
-    context.Request.Scheme = "https"; return next();
-});
 
+app.UseCors("AllowAllOrigins");
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
@@ -71,5 +85,6 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}");
 
 app.MapHub<NotificationHub>("/notificationHub");
+app.MapControllers(); 
 
 app.Run();

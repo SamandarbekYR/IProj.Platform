@@ -93,7 +93,7 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Accaunt}/{action=Login}");
 
-app.MapHub<NotificationHub>("/notificationHub");
+//app.MapHub<NotificationHub>("/notificationHub");
 
 app.Run();
 
