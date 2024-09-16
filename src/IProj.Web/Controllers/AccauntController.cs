@@ -27,16 +27,16 @@ public class AccauntController : Controller
         if (userRole != null && !string.IsNullOrEmpty(Gmail))
         {
 
-            HttpContext.Response.Cookies.Append("UserGmail", Gmail, new CookieOptions
-            {
-                HttpOnly = true,
-                Secure = true,
-                SameSite = SameSiteMode.None,
-                Domain = "iproj.uz",
-                Path = "/",
-                Expires = DateTimeOffset.UtcNow.AddDays(7)
+                HttpContext.Response.Cookies.Append("UserGmail", Gmail, new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = SameSiteMode.None,
+                    Domain = "iproj.uz",
+                    Path = "/",
+                    Expires = DateTimeOffset.UtcNow.AddDays(7)
 
-            });
+                });
 
             if (userRole.Equals("Worker"))
             {

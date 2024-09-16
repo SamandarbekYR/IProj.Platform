@@ -19,32 +19,32 @@ namespace IProjAdmin.Web.Controllers
             if (userRole != null && !string.IsNullOrEmpty(Gmail))
             {
 
-                    HttpContext.Response.Cookies.Append("UserGmail", Gmail, new CookieOptions
-                    {
-                        HttpOnly = true,
-                        Secure = true,
-                        SameSite = SameSiteMode.None,
-                        Domain = "iproj.uz",
-                        Path = "/",
-                        Expires = DateTimeOffset.UtcNow.AddDays(7)
-                    });
+                HttpContext.Response.Cookies.Append("UserGmail", Gmail, new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = SameSiteMode.None,
+                    Domain = "iproj.uz",
+                    Path = "/",
+                    Expires = DateTimeOffset.UtcNow.AddDays(7)
+                });
 
 
-                    if (userRole.Equals("Owner"))
+                if (userRole.Equals("Owner"))
+                {
+                    if (!string.IsNullOrEmpty(Gmail) && userId != null)
                     {
-                        if (!string.IsNullOrEmpty(Gmail) && userId != null)
+                        HttpContext.Response.Cookies.Append("BossId", userId.ToString()!, new CookieOptions
                         {
-                            HttpContext.Response.Cookies.Append("BossId", userId.ToString()!, new CookieOptions
-                            {
 
-                                HttpOnly = true,
-                                Secure = true,
-                                SameSite = SameSiteMode.None,
-                                Domain = "iproj.uz",
-                                Path = "/",
-                                Expires = DateTimeOffset.UtcNow.AddDays(7)
-                            });
-                        }
+                            HttpOnly = true,
+                            Secure = true,
+                            SameSite = SameSiteMode.None,
+                            Domain = "iproj.uz",
+                            Path = "/",
+                            Expires = DateTimeOffset.UtcNow.AddDays(7)
+                        });
+                    }
 
                     return RedirectToAction("Main", "Admin");
                 }
@@ -54,10 +54,8 @@ namespace IProjAdmin.Web.Controllers
                     return Redirect("https://iproj.uz");
                 }
             }
-            catch (Exception ex)
-            {
-                return View();
-            }
+
+            return View();
         }
     }
 }
