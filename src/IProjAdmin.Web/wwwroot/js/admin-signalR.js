@@ -8,7 +8,7 @@
 
 
 
-let connection = new signalR.HubConnectionBuilder()
+const connection = new signalR.HubConnectionBuilder()
     .withUrl("/notificationHub")
     .configureLogging(signalR.LogLevel.Information)
     .build();
