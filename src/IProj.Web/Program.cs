@@ -75,13 +75,14 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    app.UseHsts();
+    app.UseHsts();  
 }
 
 app.Use((context, next) =>
 {
     context.Request.Scheme = "https"; return next();
 });
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseSerilogRequestLogging(); 

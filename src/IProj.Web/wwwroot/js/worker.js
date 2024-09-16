@@ -1,10 +1,8 @@
 ﻿// SignalR Hub bog'lanishini o'rnatish
 const connection = new signalR.HubConnectionBuilder()
-    .withUrl("wss://admin.iproj.uz/notificationHub", {
-        withCredentials: true // WebSocket uchun credentials ruxsat berish
-    })
-    .configureLogging(signalR.LogLevel.Information)
-    .build();
+    .withUrl("https://localhost:7101/notificationHub")
+        .configureLogging(signalR.LogLevel.Information)
+        .build();
 
 
 connection.start()
