@@ -23,27 +23,6 @@ namespace MVCLearn.Controllers
             _rabbitMQProducer = rabbitMQProducer;
             _message = message;
         }
-        //[HttpGet]
-        //public IActionResult Boss()
-        //{
-        //    //var bossId = HttpContext.Request.Cookies["BossId"];
-
-        //    //if (bossId == null)
-        //    //{
-        //    //    return RedirectToAction("Login", "Accaunt");
-        //    //}
-
-        //    try
-        //    {
-        //        var users = _usersrepository.GetAll().Where(u => u.RoleName == "Worker").ToList();
-        //        return View(users);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Log.Error($"Databasega ulanishda xatolik yuz berdi {ex}");
-        //    }
-        //    return View();
-        //}
 
         [HttpGet]
         public IActionResult Worker()

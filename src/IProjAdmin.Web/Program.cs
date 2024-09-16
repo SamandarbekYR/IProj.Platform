@@ -27,9 +27,10 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader()
             .WithOrigins("https://admin.iproj.uz",
                          "https://iproj.uz",
+                         "https://iproj.uz/Accaunt/Login",
+                         "https://admin.iproj.uz/Home/Index",
                          "https://admin.iproj.uz/Admin/SendMessage",
-                         "https://iproj.uz/Messages/Worker"
-                          )
+                         "https://iproj.uz/Messages/Worker" )
             .AllowCredentials()
             .SetIsOriginAllowedToAllowWildcardSubdomains();
     });

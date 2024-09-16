@@ -5,10 +5,7 @@ using IProj.DataAccess.Repositories.Messages;
 using IProj.DataAccess.Repositories.Users;
 using IProj.Service.Services.MessageBroker;
 using IProj.Web.Helpers;
-using IProj.Service.Hubs;
 using Serilog;
-using IProj.DataAccess.Data;
-using Microsoft.EntityFrameworkCore;
 using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -75,7 +72,7 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    app.UseHsts();  
+    app.UseHsts();
 }
 
 app.Use((context, next) =>
@@ -85,7 +82,7 @@ app.Use((context, next) =>
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-app.UseSerilogRequestLogging(); 
+app.UseSerilogRequestLogging();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();

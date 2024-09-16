@@ -8,42 +8,56 @@ namespace IProjAdmin.Web.Controllers
     [Authorize]
     public class HomeController : Controller
     {
+        private ILogger _logger;
+
+        public HomeController(ILogger logger)
+        {
+            _logger = logger;
+        }
         public async Task<IActionResult> Index()
         {
-            var accessToken = await HttpContext.GetTokenAsync("access_token");
-            var claimsPrincipal = accessToken!.DecodeJwtToken();
-            var userRole = claimsPrincipal.GetRole();
-            (string? Gmail, Guid? userId) = claimsPrincipal.GetEmailAndId();
-
-            if (userRole != null && !string.IsNullOrEmpty(Gmail))
+            try
             {
+                var accessToken = await HttpContext.GetTokenAsync("access_token");
+                var claimsPrincipal = accessToken!.DecodeJwtToken();
+                var userRole = claimsPrincipal.GetRole();
+                (string? Gmail, Guid? userId) = claimsPrincipal.GetEmailAndId();
 
-                HttpContext.Response.Cookies.Append("UserGmail", Gmail, new CookieOptions
+                if (userRole != null && !string.IsNullOrEmpty(Gmail))
                 {
-                    HttpOnly = true,
-                    Expires = DateTimeOffset.UtcNow.AddDays(7)
-                });
 
-                if (userRole.Equals("Owner"))
-                {
-                    if (!string.IsNullOrEmpty(Gmail) && userId != null)
+                    HttpContext.Response.Cookies.Append("UserGmail", Gmail, new CookieOptions
                     {
-                        HttpContext.Response.Cookies.Append("BossId", userId.ToString()!, new CookieOptions
+                        HttpOnly = true,
+                        Expires = DateTimeOffset.UtcNow.AddDays(7)
+                    });
+
+                    if (userRole.Equals("Owner"))
+                    {
+                        if (!string.IsNullOrEmpty(Gmail) && userId != null)
                         {
-                            HttpOnly = true,
-                            Expires = DateTimeOffset.UtcNow.AddDays(7)
-                        });
+                            HttpContext.Response.Cookies.Append("BossId", userId.ToString()!, new CookieOptions
+                            {
+                                HttpOnly = true,
+                                Expires = DateTimeOffset.UtcNow.AddDays(7)
+                            });
+                        }
+
+                        return RedirectToAction("Main", "Admin");
                     }
 
-                    return RedirectToAction("Main", "Admin");
+                    else
+                    {
+                        return Redirect("https://iproj.uz");
+                    }
                 }
-
-                else
-                {
-                    return Redirect("https://iproj.uz");
-                }
+                return View();
             }
-            return View();
+            catch (Exception ex)
+            {
+                _logger.LogError($"Home controllerdagi indexda xatolik yuz berdi: {ex}");
+                return View();
+            }
         }
     }
 }
