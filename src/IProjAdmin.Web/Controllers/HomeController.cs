@@ -10,15 +10,14 @@ namespace IProjAdmin.Web.Controllers
     {
         public async Task<IActionResult> Index()
         {
-            try
-            {
-                var accessToken = await HttpContext.GetTokenAsync("access_token");
-                var claimsPrincipal = accessToken!.DecodeJwtToken();
-                var userRole = claimsPrincipal.GetRole();
-                (string? Gmail, Guid? userId) = claimsPrincipal.GetEmailAndId();
 
-                if (userRole != null && !string.IsNullOrEmpty(Gmail))
-                {
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            var claimsPrincipal = accessToken!.DecodeJwtToken();
+            var userRole = claimsPrincipal.GetRole();
+            (string? Gmail, Guid? userId) = claimsPrincipal.GetEmailAndId();
+
+            if (userRole != null && !string.IsNullOrEmpty(Gmail))
+            {
 
                     HttpContext.Response.Cookies.Append("UserGmail", Gmail, new CookieOptions
                     {
@@ -47,15 +46,13 @@ namespace IProjAdmin.Web.Controllers
                             });
                         }
 
-                        return RedirectToAction("Main", "Admin");
-                    }
-
-                    else
-                    {
-                        return Redirect("https://iproj.uz");
-                    }
+                    return RedirectToAction("Main", "Admin");
                 }
-                return View();
+
+                else
+                {
+                    return Redirect("https://iproj.uz");
+                }
             }
             catch (Exception ex)
             {

@@ -48,8 +48,6 @@ namespace MVCLearn.Controllers
             return View();
         }
 
-
-
         [HttpPost]
         public IActionResult Logout()
         {

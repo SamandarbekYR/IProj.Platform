@@ -26,14 +26,15 @@ namespace IProj.Service.Hubs
         }
         public override async Task OnConnectedAsync()
         {
+            Console.WriteLine("OnConnected boldi");
             var httpContext = Context.GetHttpContext();
             var userGmail = httpContext!.Request.Cookies["UserGmail"];
-
+            Console.WriteLine($"user email:{userGmail}\n ConnectionId:{Context.ConnectionId}");
             if (!string.IsNullOrEmpty(userGmail))
             {
                 _connection.TryAdd(Context.ConnectionId, userGmail);
                 var user = await _userRepository.UpdateUserIsOnline(userGmail, true);
-
+                Console.WriteLine($"user email:{userGmail}\n ConnectionId:{Context.ConnectionId}");
                 if (user is not null)
                 {
                     await Clients.All.SendAsync("UpdateUserStatus", user.Gmail, user.IsOnline);
@@ -59,7 +60,8 @@ namespace IProj.Service.Hubs
         {
             var connectionId = _connection.FirstOrDefault(x => x.Value == userInfo.Email).Key;
             Guid messageId = SaveMessageToMessageBroker(message, userInfo);
-
+            Console.WriteLine($"MessageId: {messageId} \n " +
+                              $"MessageContext: {message} \n ConnectionId: {connectionId}");
             SendMessageToSelectedUsers sendMessageDto = new SendMessageToSelectedUsers
             {
                 MessageId = messageId,
@@ -68,6 +70,7 @@ namespace IProj.Service.Hubs
 
             if (connectionId != null)
             {
+                Console.WriteLine("send methodga keldi:");
                 await Clients.Client(connectionId).SendAsync("ReceiveMessage", sendMessageDto);
             }
         }
