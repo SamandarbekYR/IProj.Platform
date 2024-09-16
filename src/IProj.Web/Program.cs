@@ -1,73 +1,23 @@
-using IProj.DataAccess.Interfaces.MessageBroker;
-using IProj.DataAccess.Interfaces.Messages;
-using IProj.DataAccess.Interfaces.Users;
-using IProj.DataAccess.Repositories.Messages;
-using IProj.DataAccess.Repositories.Users;
-using IProj.Service.Services.MessageBroker;
+using Iproj.Web.Configurations;
+using IProj.Web.Configurations;
 using IProj.Web.Helpers;
+using IProj.Web.Models;
 using Serilog;
-using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddCustomDbContext(builder.Configuration);
 builder.Services.AddCustomControllers();
-builder.Services.AddTransient<IUserRepository, UserRepository>();
-builder.Services.AddTransient<IMessageRepository, MessageRepository>();
-builder.Services.AddTransient<IRabbitMqProducer, RabbitMqProducer>();
 builder.Services.AddSignalR();
-
-builder.Host.UseSerilog((context, configuration) =>
-    configuration.ReadFrom.Configuration(context.Configuration));
-
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultScheme = "Cookies";
-    options.DefaultChallengeScheme = "oidc";
-    options.DefaultSignOutScheme = "Cookies";
-}).AddCookie("Cookies")
-  .AddOpenIdConnect("oidc", options =>
-  {
-      options.Authority = "https://auth.iproj.uz";
-      options.ClientId = "oidcMVCApp";
-      options.ClientSecret = "Wabase";
-      options.ResponseType = "code";
-      options.UsePkce = true;
-      options.ResponseMode = "query";
-      options.Scope.Add("message.read");
-      options.Scope.Add("message.write");
-      options.Scope.Add("openid");
-      options.Scope.Add("profile");
-      options.Scope.Add("email");
-      options.Scope.Add("role");
-      options.GetClaimsFromUserInfoEndpoint = true;
-      options.RequireHttpsMetadata = true;
-      options.SaveTokens = true;
-      options.CallbackPath = "/signin-oidc";
-  });
-
-
-var logger = new LoggerConfiguration()
-        .MinimumLevel.Debug()
-        .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-        .Enrich.FromLogContext()
-        .WriteTo.File("Logs/log-.txt", rollingInterval: RollingInterval.Day)
-        .WriteTo.Console()
-        .CreateLogger();
-builder.Host.UseSerilog(logger);
-
-
-
+builder.Services.ConfigureCors();
+builder.Services.ConfigureAuthentication();
+builder.Host.ConfigureSerilog(builder.Configuration);
+ServiceConfig.AddCustomServices(builder.Services);
+builder.Services.Configure<AppSettings>
+    (builder.Configuration.GetSection("AppSettings"));
 var app = builder.Build();
 
-//using (var scope = app.Services.CreateScope())
-//{
-//    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-
-//    // Migratsiyalarni qo'llash va ma'lumotlar bazasini yangilash
-//    dbContext.Database.Migrate();
-//}
 
 if (!app.Environment.IsDevelopment())
 {
@@ -90,8 +40,6 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Accaunt}/{action=Login}");
-
-//app.MapHub<NotificationHub>("/notificationHub");
 
 app.Run();
 

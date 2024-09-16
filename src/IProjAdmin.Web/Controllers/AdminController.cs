@@ -1,5 +1,4 @@
 ﻿using IProj.DataAccess.Interfaces.Users;
-using IProj.DataAccess.Repositories.Users;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

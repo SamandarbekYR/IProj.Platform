@@ -1,8 +1,10 @@
 ﻿using IProj.DataAccess.Interfaces.Users;
 using IProj.Web.Helpers;
+using IProj.Web.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace IProj.Web.Controllers;
 
@@ -10,10 +12,13 @@ namespace IProj.Web.Controllers;
 public class AccauntController : Controller
 {
     private IUserRepository _service;
+    private AppSettings _appSettings;
 
-    public AccauntController(IUserRepository service)
+    public AccauntController(IUserRepository service,
+                             IOptions<AppSettings> appSettings)
     {
         _service = service;
+        _appSettings = appSettings.Value;
     }
 
     [HttpGet]
@@ -47,7 +52,7 @@ public class AccauntController : Controller
                         HttpOnly = true,
                         Secure = true,
                         SameSite = SameSiteMode.None,
-                        Domain = "iproj.uz",
+                        Domain = _appSettings.Domain,
                         Path = "/",
                         Expires = DateTimeOffset.UtcNow.AddDays(7)
                     });
@@ -58,7 +63,7 @@ public class AccauntController : Controller
 
             else
             {
-                return Redirect("https://admin.iproj.uz");
+                return Redirect(_appSettings.RedirectUrl);
             }
         }
         return View();
