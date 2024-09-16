@@ -1,4 +1,4 @@
-﻿document.addEventListener('DOMContentLoaded', function() {
+﻿document.addEventListener('DOMContentLoaded', function () {
     setTimeout(function () {
         document.getElementById('table-content').classList.remove('hidden');
         document.getElementById('loading').classList.add('hidden');
@@ -118,8 +118,9 @@ document.getElementById("sendMessageButton").addEventListener("click", async fun
 
             newProgressText.textContent = ' ';
             document.getElementById('modalheader').textContent = 'The process has been completed';
-            whoInfo.textContent = '';
-            userEmail.textContent = '';
+            document.getElementById('usersCount').textContent = ' ';
+            whoInfo.textContent = ' ';
+            userEmail.textContent = ' ';
             return;
         }
 
@@ -192,8 +193,8 @@ document.getElementById("notificationView").addEventListener("click", function (
 
 
 
-let showAllUsers = true; 
-let filterStatus = '';   
+let showAllUsers = true;
+let filterStatus = '';
 
 function filterUsersByStatus(status) {
     const rows = userTableBody.getElementsByTagName('tr');
@@ -202,9 +203,9 @@ function filterUsersByStatus(status) {
         const userStatus = statusElement.textContent.trim();
 
         if (status === 'All' || userStatus === status) {
-            rows[i].style.display = ''; 
+            rows[i].style.display = '';
         } else {
-            rows[i].style.display = 'none'; 
+            rows[i].style.display = 'none';
         }
     }
 }
@@ -213,14 +214,14 @@ document.querySelector(".success-btn").addEventListener("click", function () {
     if (filterStatus === 'Success') {
         showAllUsers = true;
         filterStatus = '';
-        filterUsersByStatus('All'); 
+        filterUsersByStatus('All');
         this.classList.remove("active");
     } else {
         showAllUsers = false;
         filterStatus = 'Success';
-        filterUsersByStatus('Success'); 
-        this.classList.add("active"); 
-        document.querySelector(".error-btn").classList.remove("active"); 
+        filterUsersByStatus('Success');
+        this.classList.add("active");
+        document.querySelector(".error-btn").classList.remove("active");
     }
 });
 
@@ -228,14 +229,14 @@ document.querySelector(".error-btn").addEventListener("click", function () {
     if (filterStatus === 'Failed') {
         showAllUsers = true;
         filterStatus = '';
-        filterUsersByStatus('All'); 
-        this.classList.remove("active"); 
+        filterUsersByStatus('All');
+        this.classList.remove("active");
     } else {
         showAllUsers = false;
         filterStatus = 'Failed';
         filterUsersByStatus('Failed');
-        this.classList.add("active"); 
-        document.querySelector(".success-btn").classList.remove("active"); 
+        this.classList.add("active");
+        document.querySelector(".success-btn").classList.remove("active");
     }
 });
 
