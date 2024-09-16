@@ -8,12 +8,6 @@ namespace IProjAdmin.Web.Controllers
     [Authorize]
     public class HomeController : Controller
     {
-        private ILogger _logger;
-
-        public HomeController(ILogger logger)
-        {
-            _logger = logger;
-        }
         public async Task<IActionResult> Index()
         {
             try
@@ -29,8 +23,13 @@ namespace IProjAdmin.Web.Controllers
                     HttpContext.Response.Cookies.Append("UserGmail", Gmail, new CookieOptions
                     {
                         HttpOnly = true,
+                        Secure = true,
+                        SameSite = SameSiteMode.None,
+                        Domain = "iproj.uz",
+                        Path = "/",
                         Expires = DateTimeOffset.UtcNow.AddDays(7)
                     });
+
 
                     if (userRole.Equals("Owner"))
                     {
@@ -38,7 +37,12 @@ namespace IProjAdmin.Web.Controllers
                         {
                             HttpContext.Response.Cookies.Append("BossId", userId.ToString()!, new CookieOptions
                             {
+
                                 HttpOnly = true,
+                                Secure = true,
+                                SameSite = SameSiteMode.None,
+                                Domain = "iproj.uz",
+                                Path = "/",
                                 Expires = DateTimeOffset.UtcNow.AddDays(7)
                             });
                         }
@@ -55,7 +59,6 @@ namespace IProjAdmin.Web.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Home controllerdagi indexda xatolik yuz berdi: {ex}");
                 return View();
             }
         }

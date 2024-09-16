@@ -30,7 +30,12 @@ public class AccauntController : Controller
             HttpContext.Response.Cookies.Append("UserGmail", Gmail, new CookieOptions
             {
                 HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.None,
+                Domain = "iproj.uz",
+                Path = "/",
                 Expires = DateTimeOffset.UtcNow.AddDays(7)
+
             });
 
             if (userRole.Equals("Worker"))
@@ -40,6 +45,10 @@ public class AccauntController : Controller
                     HttpContext.Response.Cookies.Append("WorkerId", userId.ToString()!, new CookieOptions
                     {
                         HttpOnly = true,
+                        Secure = true,
+                        SameSite = SameSiteMode.None,
+                        Domain = "iproj.uz",
+                        Path = "/",
                         Expires = DateTimeOffset.UtcNow.AddDays(7)
                     });
                 }
