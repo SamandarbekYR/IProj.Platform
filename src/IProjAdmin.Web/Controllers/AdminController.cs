@@ -52,7 +52,7 @@ namespace IProjAdmin.Web.Controllers
 
             return SignOut(new AuthenticationProperties
             {
-                RedirectUri = Url.Action("Login", "Accaunt")
+                RedirectUri = Url.Action("Index", "Home")
             }, "Cookies", "oidc");
         }
 

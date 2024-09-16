@@ -35,7 +35,7 @@ namespace IProjAdmin.Web.Controllers
                         });
                     }
 
-                    return RedirectToAction("Admin", "Main");
+                    return RedirectToAction("Main", "Admin");
                 }
 
                 else
