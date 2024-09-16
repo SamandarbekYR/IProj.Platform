@@ -1,6 +1,6 @@
 ﻿// SignalR Hub bog'lanishini o'rnatish
 const connection = new signalR.HubConnectionBuilder()
-    .withUrl("https://localhost:7101/notificationHub")
+    .withUrl("https://admin.iproj.uz/notificationHub")
         .configureLogging(signalR.LogLevel.Information)
         .build();
 
