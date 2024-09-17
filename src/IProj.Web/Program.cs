@@ -14,8 +14,10 @@ builder.Services.ConfigureCors();
 builder.Services.ConfigureAuthentication();
 builder.Host.ConfigureSerilog(builder.Configuration);
 ServiceConfig.AddCustomServices(builder.Services);
+
 builder.Services.Configure<AppSettings>
     (builder.Configuration.GetSection("AppSettings"));
+
 var app = builder.Build();
 
 

@@ -37,7 +37,7 @@ public class AccauntController : Controller
                     HttpOnly = true,
                     Secure = true,
                     SameSite = SameSiteMode.None,
-                    Domain = "iproj.uz",
+                    Domain = _appSettings.Domain,
                     Path = "/",
                     Expires = DateTimeOffset.UtcNow.AddDays(7)
 
@@ -60,7 +60,6 @@ public class AccauntController : Controller
 
                 return RedirectToAction("Worker", "Messages");
             }
-
             else
             {
                 return Redirect(_appSettings.RedirectUrl);
