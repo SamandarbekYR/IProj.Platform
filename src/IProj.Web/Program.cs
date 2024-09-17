@@ -61,13 +61,6 @@ builder.Host.UseSerilog(logger);
 
 var app = builder.Build();
 
-//using (var scope = app.Services.CreateScope())
-//{
-//    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-
-//    // Migratsiyalarni qo'llash va ma'lumotlar bazasini yangilash
-//    dbContext.Database.Migrate();
-//}
 
 if (!app.Environment.IsDevelopment())
 {

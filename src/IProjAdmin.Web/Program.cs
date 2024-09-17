@@ -64,7 +64,6 @@ builder.Services.AddAuthentication(options =>
 
 var app = builder.Build();
 
-// HTTP so'rovlarini sozlash
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");

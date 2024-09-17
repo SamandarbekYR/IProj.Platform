@@ -47,7 +47,13 @@ namespace IProjAdmin.Web.Controllers
         {
             foreach (var cookie in Request.Cookies.Keys)
             {
-                Response.Cookies.Delete(cookie);
+                Response.Cookies.Delete(cookie, new CookieOptions
+                {
+                    Domain = "iproj.uz",    
+                    Path = "/",             
+                    Secure = true,           
+                    HttpOnly = true    
+                });
             }
 
             return SignOut(new AuthenticationProperties
