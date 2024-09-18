@@ -4,23 +4,20 @@ using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 using System.Text;
 
-namespace IProj.Service.Services.MessageBroker;
-
-public class RabbitMqProducer : IRabbitMqProducer
+public class RabbitMqProducer : IRabbitMqProducer, IDisposable
 {
-    private readonly IConfigurationSection _config;
+    private static IConnection? _connection;
+    private static IModel? _channel;
     private readonly ILogger<RabbitMqProducer> _logger;
-    private readonly IConnection _connection;
-    private readonly IModel _channel;
+    private readonly IConfigurationSection _config;
 
-    public RabbitMqProducer(IConfiguration configuration,
-                            ILogger<RabbitMqProducer> logger)
+    public RabbitMqProducer(IConfiguration configuration, ILogger<RabbitMqProducer> logger)
     {
-        try
-        {
-            _config = configuration.GetSection("MessageBroker");
-            _logger = logger;
+        _config = configuration.GetSection("MessageBroker");
+        _logger = logger;
 
+        if (_connection == null)
+        {
             var factory = new ConnectionFactory()
             {
                 HostName = _config["Host"],
@@ -29,21 +26,19 @@ public class RabbitMqProducer : IRabbitMqProducer
                 Password = _config["Password"],
                 VirtualHost = _config["VirtualHost"]
             };
-
             _connection = factory.CreateConnection();
+        }
+
+        if (_channel == null)
+        {
             _channel = _connection.CreateModel();
             _channel.QueueDeclare(queue: "MessageQueue",
                                   durable: true, exclusive: false,
                                   autoDelete: false, arguments: null);
-
             _channel.BasicQos(prefetchSize: 0, prefetchCount: 1, global: false);
         }
-
-        catch (Exception ex)
-        {
-            _logger.LogError($"RabbitMq ga ulanishda xatolik yuz berdi: {ex}");
-        }
     }
+
     public void SendMessage(string message)
     {
         try
@@ -55,15 +50,17 @@ public class RabbitMqProducer : IRabbitMqProducer
                                  body: body);
             Console.WriteLine("Sent {0}", message);
         }
-
-        catch(Exception ex) 
+        catch (Exception ex)
         {
             _logger.LogError($"RabbitMqga ma'lumot yozishda xatolik yuz berdi: {ex}");
         }
     }
+
     public void Dispose()
     {
-        _channel.Close();
-        _connection.Close();
+        _channel?.Close();
+        _channel?.Dispose();
+        _connection?.Close();
+        _connection?.Dispose();
     }
 }

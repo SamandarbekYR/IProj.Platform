@@ -26,28 +26,35 @@ public class RabbitMqConsumer : BackgroundService
                             ILogger<RabbitMqConsumer> logger)
 
     {
+
         _logger = logger;
+        _serviceProvider = serviceProvider;
+        _config = config.GetSection("MessageBroker");
 
         try
         {
-            _serviceProvider = serviceProvider;
-            _config = config.GetSection("MessageBroker");
-
-            var factory = new ConnectionFactory()
+            if (_connection == null)
             {
-                HostName = _config["Host"],
-                Port = int.Parse(_config["Port"]!),
-                UserName = _config["Username"],
-                Password = _config["Password"],
-                VirtualHost = _config["VirtualHost"]
-            };
+                var factory = new ConnectionFactory()
+                {
+                    HostName = _config["Host"],
+                    Port = int.Parse(_config["Port"]!),
+                    UserName = _config["Username"],
+                    Password = _config["Password"],
+                    VirtualHost = _config["VirtualHost"]
+                };
 
-            _connection = factory.CreateConnection();
-            _channel = _connection.CreateModel();
-            _channel.QueueDeclare(queue: "MessageQueue",
-                                  durable: true, exclusive: false,
-                                  autoDelete: false, arguments: null);
-            _channel.BasicQos(prefetchSize: 0, prefetchCount: 1, global: false);
+                _connection = factory.CreateConnection();
+            }
+
+            if (_channel == null)
+            {
+                _channel = _connection.CreateModel();
+                _channel.QueueDeclare(queue: "MessageQueue",
+                                      durable: true, exclusive: false,
+                                      autoDelete: false, arguments: null);
+                _channel.BasicQos(prefetchSize: 0, prefetchCount: 1, global: false);
+            }
         }
         catch(Exception ex)
         {
@@ -110,5 +117,14 @@ public class RabbitMqConsumer : BackgroundService
         {
             _logger.LogError($"RabbitMq dan malumot olishda xatolik yuz berdi: {ex}");
         }
+    }
+
+    public override void Dispose()
+    {
+        _channel?.Close();
+        _channel?.Dispose();
+        _connection?.Close();
+        _connection?.Dispose();
+        base.Dispose();
     }
 }

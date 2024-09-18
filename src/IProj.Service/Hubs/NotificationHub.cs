@@ -57,8 +57,7 @@ namespace IProj.Service.Hubs
         {
             var connectionId = _connection.FirstOrDefault(x => x.Value == userInfo.Email).Key;
             Guid messageId = SaveMessageToMessageBroker(message, userInfo);
-            Console.WriteLine($"MessageId: {messageId} \n " +
-                              $"MessageContext: {message} \n ConnectionId: {connectionId}");
+
             SendMessageToSelectedUsers sendMessageDto = new SendMessageToSelectedUsers
             {
                 MessageId = messageId,
