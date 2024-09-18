@@ -18,7 +18,6 @@ public class HomeController : Controller
     }
     public async Task<IActionResult> Index()
     {
-
         var accessToken = await HttpContext.GetTokenAsync("access_token");
         var claimsPrincipal = accessToken!.DecodeJwtToken();
         var userRole = claimsPrincipal.GetRole();
@@ -62,7 +61,6 @@ public class HomeController : Controller
                 return Redirect(_appSettings.RedirectUrl);
             }
         }
-
         return View();
     }
 }
