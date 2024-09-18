@@ -5,63 +5,21 @@ using IProj.DataAccess.Repositories.Messages;
 using IProj.DataAccess.Repositories.Users;
 using IProj.Service.Hubs;
 using IProj.Service.Services.MessageBroker;
+using IProjAdmin.Web.Configurations;
 using IProjAdmin.Web.Helpers;
+using IProjAdmin.Web.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddCustomDbContext(builder.Configuration);
 builder.Services.AddCustomControllers();
-builder.Services.AddTransient<IUserRepository, UserRepository>();
-builder.Services.AddTransient<IMessageRepository, MessageRepository>();
-builder.Services.AddTransient<IRabbitMqProducer, RabbitMqProducer>();
 builder.Services.AddSignalR();
-
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAllOrigins", builder =>
-    {
-        builder
-            .AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader()
-            .WithOrigins("https://admin.iproj.uz",
-                         "https://iproj.uz",
-                         "https://iproj.uz/Accaunt/Login",
-                         "https://admin.iproj.uz/Home/Index",
-                         "https://admin.iproj.uz/Admin/SendMessage",
-                         "https://iproj.uz/Messages/Worker" )
-            .AllowCredentials()
-            .SetIsOriginAllowedToAllowWildcardSubdomains();
-    });
-});
-
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultScheme = "Cookies";
-    options.DefaultChallengeScheme = "oidc";
-    options.DefaultSignOutScheme = "Cookies";
-}).AddCookie("Cookies")
-  .AddOpenIdConnect("oidc", options =>
-  {
-      options.Authority = "https://auth.iproj.uz";
-      options.ClientId = "oidcMVCAppAdmin";
-      options.ClientSecret = "Wabase";
-      options.ResponseType = "code";
-      options.UsePkce = true;
-      options.ResponseMode = "query";
-      options.Scope.Add("message.read");
-      options.Scope.Add("message.write");
-      options.Scope.Add("openid");
-      options.Scope.Add("profile");
-      options.Scope.Add("email");
-      options.Scope.Add("role");
-      options.GetClaimsFromUserInfoEndpoint = true;
-      options.RequireHttpsMetadata = true;
-      options.SaveTokens = true;
-      options.CallbackPath = "/signin-oidc";
-  });
-
+ServiceConfig.AddCustomServices(builder.Services);
+builder.Services.ConfigureCors();
+builder.Services.ConfigureAuthentication();
+builder.Services.Configure<AppSettings>
+    (builder.Configuration.GetSection("AppSettings"));
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
@@ -77,18 +35,13 @@ app.Use((context, next) =>
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
-
 app.UseCors("AllowAllOrigins");
-
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}");
 
 app.MapHub<NotificationHub>("/notificationHub").RequireCors("AllowAllOrigins");
-
 app.Run();
